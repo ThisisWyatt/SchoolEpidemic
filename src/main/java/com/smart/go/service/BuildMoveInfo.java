@@ -36,6 +36,7 @@ public class BuildMoveInfo {
     private TeacherDao teacherDao;
 
     public void buildMoveInfo() {
+
         List<SingleLog> singleLogList = singleLogDao.findAll();
         List<MoveInfo> moveInfos = new LinkedList<>();
         System.out.println(singleLogList.size());
@@ -208,15 +209,10 @@ public class BuildMoveInfo {
                 moveInfos.add(moveInfo);
             }
         }
-        System.out.println("moveInfo Length=" + moveInfos.size());
+        logger.info("moveInfo Length=" + moveInfos.size());
         moveInfoDao.saveAll(moveInfos);
-
     }
 
-    public static void main(String[] args){
-        BuildMoveInfo buildMoveInfo=new BuildMoveInfo();
-        buildMoveInfo.buildMoveInfo();
-    }
 
 
 }

@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Author Cloudr
  * Date 2020/4/24 2:25
  **/
-public interface MoveInfoDao extends JpaRepository<MoveInfo,Long> {
+public interface MoveInfoDao extends JpaRepository<MoveInfo,String> {
 
 }

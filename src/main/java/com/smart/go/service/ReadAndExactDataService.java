@@ -2,6 +2,8 @@ package com.smart.go.service;
 
 import com.smart.go.domain.SingleLog;
 import com.smart.go.util.ExtractData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,6 +23,8 @@ public class ReadAndExactDataService {
     @Resource
     private SingleLogService singleLogService;
 
+    private Logger logger = LogManager.getLogger(this.getClass());
+
     public void TestReadLog() throws IOException, ParseException {
         InputStream stream = getClass().getClassLoader().getResourceAsStream("messages-20200419");
         assert stream != null;
@@ -33,12 +37,11 @@ public class ReadAndExactDataService {
                     singleLogService.save(singleLog);
                 }
             }
+            else {
+                logger.info("此条记录为空");
+            }
         }
         br.close();
     }
 
-    public static void main(String[] args) throws IOException, ParseException {
-        ReadAndExactDataService r=new ReadAndExactDataService();
-        r.TestReadLog();
-    }
 }

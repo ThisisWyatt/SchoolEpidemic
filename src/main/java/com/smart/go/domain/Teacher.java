@@ -12,11 +12,11 @@ import javax.persistence.*;
 public class Teacher {
 
     @Id
-    @Column(name = "EMPLOYEE_ID",length = 190) //职工号
+    @Column(name = "EMPLOYEE_ID",length = 190)   //职工号
     private String employeeId;
-    @Column(name = "NAME") //姓名
+    @Column(name = "NAME")                       //姓名
     private String name;
-    @Column(name = "DEPARTMENT") //部门
+    @Column(name = "DEPARTMENT")                 //部门
     private String department;
 
 

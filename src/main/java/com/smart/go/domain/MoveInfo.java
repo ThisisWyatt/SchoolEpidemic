@@ -12,26 +12,26 @@ import javax.persistence.*;
  **/
 @Entity
 @Table(name = "move_info")
+@IdClass(MoveInfoMultiKeys.class)
 public class MoveInfo implements Serializable {
-
     @Id
-    @Column(name = "people_id") //学号或职工号
+    @Column(name = "people_id",length = 190)     //学号或职工号
     private String peopleId;
     @Id
-    @Column(name = "record_time") //记录时间
+    @Column(name = "record_time",length = 190)   //记录时间
     private Date recordTime;
-    @Column(name = "name") //姓名
+    @Column(name = "name")          //姓名
     private String name;
-    @Column(name = "department") //学生班级或者职工部门
+    @Column(name = "department")    //学生班级或者职工部门
     private String department;
-    @Column(name = "location") //AP增加或删除的地点
+    @Column(name = "location")      //AP增加或删除的地点
     private String location;
     @Column(name = "location_from") //AP切换或漫游的起始点
     private String locationFrom;
-    @Column(name = "location_to") //AP切换或漫游的终点
+    @Column(name = "location_to")   //AP切换或漫游的终点
     private String locationTo;
 
-    @Column(name = "ap_type") //AP变换类型
+    @Column(name = "ap_type")       //AP变换类型
     private String apType;
 
 

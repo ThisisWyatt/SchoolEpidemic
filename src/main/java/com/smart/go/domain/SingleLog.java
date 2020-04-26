@@ -1,7 +1,9 @@
 package com.smart.go.domain;
 
 import org.hibernate.annotations.Proxy;
+import org.springframework.stereotype.Component;
 
+import javax.naming.Name;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,16 +16,23 @@ import java.util.Date;
  **/
 @Entity
 @Table(name = "aclog_result")
-public class SingleLog {
+@IdClass(SingleLogMultiKeys.class)
+public class SingleLog implements Serializable {
 
     @Id
-    private Date recordTime;
+    @Column(name = "record_time",length = 190)
+    private Date recordTime;    //记录时间
     @Id
-    private String userMac;
-    private String apName;
-    private String apNameFrom;
-    private String apNameTo;
-    private int type;
+    @Column(name = "user_mac",length = 190)
+    private String userMac;     //用户mac地址
+    @Column(name = "ap_name")
+    private String apName;      //AP增加或减少用户时的AP名字
+    @Column(name = "ap_name_from")
+    private String apNameFrom;  //AP漫游或切换时源AP名称
+    @Column(name = "ap_name_to")
+    private String apNameTo;    //AP漫游或切换时目的AP名称
+    @Column(name = "type")
+    private int type;           //日志记录的AP切换类型 1:切换 2:漫游 3:增加 4:减少
 
     public SingleLog() {
     }

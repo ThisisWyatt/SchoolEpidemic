@@ -13,19 +13,19 @@ import javax.persistence.*;
 @Table(name = "student_info")
 public class Student {
     @Id
-    @Column(name = "STUDENT_NO",length = 190) //学号
+    @Column(name = "STUDENT_NO",length = 190)   //学号
     private String studentNo;
-    @Column(name = "NAME") //姓名
+    @Column(name = "NAME")                      //姓名
     private String name;
-    @Column(name = "GENDER") //性别
+    @Column(name = "GENDER")                    //性别
     private String gender;
-    @Column(name = "SCHOOL_YEAR") //年级
+    @Column(name = "SCHOOL_YEAR")               //年级
     private String schoolYear;
-    @Column(name = "COLLEGE_NAME") //学院
+    @Column(name = "COLLEGE_NAME")              //学院
     private String collegeName;
-    @Column(name = "MAJOR_NAME")  //专业
+    @Column(name = "MAJOR_NAME")                //专业
     private String majorName;
-    @Column(name = "CLASS_NAME")  //班级
+    @Column(name = "CLASS_NAME")                //班级
     private String className;
 
     public String getStudentNo() {

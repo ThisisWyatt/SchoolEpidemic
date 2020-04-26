@@ -10,31 +10,23 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ap_info")
 public class Ap {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "AP_NAME") //AP名字
+
+    @Column(name = "AP_NAME")       //AP名字
     private String apName;
-    @Column(name = "IP_ADDRESS") //IP地址
+    @Column(name = "IP_ADDRESS")    //IP地址
     private String ipAddress;
-    @Column(name = "MAC_ADDRESS") //MAC地址
+    @Id
+    @Column(name = "MAC_ADDRESS",length = 190)   //MAC地址
     private String macAddress;
-    @Column(name = "CAMPUS") // 校区
+    @Column(name = "CAMPUS")        // 校区
     private String campus;
     @Column(name = "BUILDING_NAME") //楼宇名称
     private String buildingName;
-    @Column(name = "FLOOR_ID") //房间号
+    @Column(name = "FLOOR_ID")      //楼层数
     private String floorId;
-    @Column(name = "ROOM_ID") //房间号
+    @Column(name = "ROOM_ID")       //房间号
     private String roomId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getApName() {
         return apName;

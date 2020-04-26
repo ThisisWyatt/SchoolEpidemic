@@ -1,9 +1,6 @@
 package com.smart.go.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -14,14 +11,15 @@ import java.io.Serializable;
  **/
 @Entity
 @Table(name = "user_info")
+@IdClass(ApUserMultiKeys.class)
 public class ApUser implements Serializable {
     @Id
-    @Column(name = "MAC_ADDRESS") //用户mac地址
+    @Column(name = "MAC_ADDRESS",length = 190)   //用户mac地址
     private String macAddress;
     @Id
-    @Column(name = "USER_ID") // 用户ID
+    @Column(name = "USER_ID",length = 190)       // 用户ID
     private String userId;
-    @Column(name = "USER_NAME") //用户姓名
+    @Column(name = "USER_NAME")     //用户姓名
     private String userName;
     @Column(name = "IPV4_ADDRESS")  //用户ipv4地址
     private String ipv4Address;
