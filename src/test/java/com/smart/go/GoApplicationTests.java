@@ -1,9 +1,14 @@
 package com.smart.go;
 
+import com.smart.go.dao.ApDao;
+import com.smart.go.dao.SingleLogDao;
+import com.smart.go.domain.Ap;
 import com.smart.go.domain.SingleLog;
 import com.smart.go.domain.Teacher;
 import com.smart.go.service.BuildMoveInfo;
 import com.smart.go.service.ReadAndExactDataService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.discovery.ClasspathResourceSelector;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
@@ -12,6 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 import sun.reflect.generics.tree.VoidDescriptor;
 
 import javax.annotation.Resource;
+import javax.persistence.Table;
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -19,15 +25,40 @@ import java.security.Signature;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SpringBootTest
 class GoApplicationTests {
-
     @Test
     void contextLoads() {
     }
+
+    private Logger logger = LogManager.getLogger(this.getClass());
+
+
+    @Resource
+    private BuildMoveInfo buildMoveInfo;
+    @Test
+    void TestBuildMoveInfo(){
+        long currentTime = System.currentTimeMillis();
+        buildMoveInfo.buildMoveInfo();
+        logger.info("All  cost: " + (System.currentTimeMillis() - currentTime) + " ms");
+    }
+
+    @Resource
+    private ReadAndExactDataService readAndExactDataService;
+
+    @Test
+    void TestReadExtract() throws IOException, ParseException {
+        readAndExactDataService.TestReadLog();
+    }
+
+
+
+
+
 
     @Test
     void helloWorld() {
@@ -46,6 +77,7 @@ class GoApplicationTests {
         }
     }
 
+    //
     @Test
     void TestReadLog() throws IOException {
         FileReader fr = new FileReader("X:\\test.log");
@@ -58,13 +90,7 @@ class GoApplicationTests {
         br.close();
     }
 
-    @Resource
-    private ReadAndExactDataService readAndExactDataService;
 
-    @Test
-    void TestReadExtract() throws IOException, ParseException {
-        readAndExactDataService.TestReadLog();
-    }
 
     @Test
     void Read() throws IOException {
@@ -99,21 +125,30 @@ class GoApplicationTests {
     }
 
 
-    @Resource
-    private BuildMoveInfo buildMoveInfo;
-    @Test
-    void TestBuildMoveInfo(){
-        long currentTime = System.currentTimeMillis();
-        buildMoveInfo.buildMoveInfo();
-        System.out.println("All  cost: " + (System.currentTimeMillis() - currentTime) + " ms");
-    }
-
     @Test
     void mergeString(){
         String a="Hello ";
         String b="World";
         String c=a+b;
         System.out.println(c);
+    }
+
+    @Resource
+    private SingleLogDao singleLogDao;
+
+    @Test
+    void testFinSingleLogAll(){
+        List<SingleLog> singleLogList = singleLogDao.findAll();
+        System.out.println(singleLogList.size());
+
+    }
+
+    @Resource
+    private ApDao apDao;
+    @Test
+    void TestFindAllAp(){
+        List<Ap> apList=apDao.findAll();
+        System.out.println(apList.size());
     }
 }
 
