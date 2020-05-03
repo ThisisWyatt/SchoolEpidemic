@@ -113,4 +113,18 @@ public class MoveInfo implements Serializable {
     public void setApType(String apType) {
         this.apType = apType;
     }
+
+    @Override
+    public String toString() {
+        return "MoveInfo{" +
+                "peopleId='" + peopleId + '\'' +
+                ", recordTime=" + recordTime +
+                ", name='" + name + '\'' +
+                ", department='" + department + '\'' +
+                ", location='" + location + '\'' +
+                ", locationFrom='" + locationFrom + '\'' +
+                ", locationTo='" + locationTo + '\'' +
+                ", apType='" + apType + '\'' +
+                '}';
+    }
 }

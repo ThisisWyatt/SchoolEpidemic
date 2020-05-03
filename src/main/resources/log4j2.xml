@@ -19,7 +19,7 @@
     </appenders>
     <loggers>
         <root level="INFO">
-<!--            <appender-ref ref="Console"/>-->
+            <appender-ref ref="Console"/>
 <!--            <appender-ref ref="RollingFileInfo"/>-->
         </root>
     </loggers>
