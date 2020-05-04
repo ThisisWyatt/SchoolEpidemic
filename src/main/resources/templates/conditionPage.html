@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <form th:action="@{/count/query}" method="post">
+    <form th:action="@{/count/queryInPeriod}" method="post">
         <table>
             <tr>
                 <td>请输入查询条件: </td>>
@@ -16,6 +16,23 @@
             </tr>
             <tr>
                 <td><input type="submit" th:value="提交"> </td>>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <form th:action="@{/count/queryAtPoint}" method="post">
+        <table>
+            <tr>
+                <td>请输入查询条件:</td>
+                >
+                <td>时间：<input th:type="text" th:name="StartTime"></td>
+                <td>查询地点:<input th:type="text" th:name="Location"></td>
+                >
+            </tr>
+            <tr>
+                <td><input type="submit" th:value="提交"></td>
+                >
             </tr>
         </table>
     </form>

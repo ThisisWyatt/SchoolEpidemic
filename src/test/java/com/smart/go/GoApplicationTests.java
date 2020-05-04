@@ -1,8 +1,10 @@
 package com.smart.go;
 
 import com.smart.go.dao.ApDao;
+import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.dao.SingleLogDao;
 import com.smart.go.domain.Ap;
+import com.smart.go.domain.MoveInfo;
 import com.smart.go.domain.SingleLog;
 import com.smart.go.domain.Teacher;
 import com.smart.go.service.BuildMoveInfo;
@@ -12,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.discovery.ClasspathResourceSelector;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+import org.springframework.beans.factory.support.MethodOverride;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import sun.reflect.generics.tree.VoidDescriptor;
@@ -24,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Signature;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,8 +44,9 @@ class GoApplicationTests {
 
     @Resource
     private BuildMoveInfo buildMoveInfo;
+
     @Test
-    void TestBuildMoveInfo(){
+    void TestBuildMoveInfo() {
         long currentTime = System.currentTimeMillis();
         buildMoveInfo.buildMoveInfo();
         logger.info("All  cost: " + (System.currentTimeMillis() - currentTime) + " ms");
@@ -55,43 +60,6 @@ class GoApplicationTests {
         readAndExactDataService.TestReadLog();
     }
 
-
-
-
-
-
-    @Test
-    void helloWorld() {
-        System.out.println("hello future");
-    }
-
-    @Test
-    void testRegex() {
-        String str = "(a)(b)(c)(d)(e)";
-        String regex = "\\(.*\\)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(str);
-        System.out.println("replace: " + str.replaceAll(regex, "O"));
-        while (matcher.find()) {
-            System.out.println("matcher: " + matcher.group(0));
-        }
-    }
-
-    //
-    @Test
-    void TestReadLog() throws IOException {
-        FileReader fr = new FileReader("X:\\test.log");
-        BufferedReader br = new BufferedReader(fr);
-        while (br.readLine() != null) {
-            String s = br.readLine();
-            System.out.println(s);
-            System.out.println("----------");
-        }
-        br.close();
-    }
-
-
-
     @Test
     void Read() throws IOException {
 
@@ -102,53 +70,18 @@ class GoApplicationTests {
 
     }
 
-    @Test
-    void testDateChange() throws ParseException {
-
-        Date date=new Date();
-        System.out.println("date"+date);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//Date指定格式：yyyy-MM-dd HH:mm:ss
-        String s=simpleDateFormat.format(date);
-        System.out.println(simpleDateFormat.format(date));
-        Date d=simpleDateFormat.parse(s);
-        System.out.println(d);
-
-    }
-
-    @Test
-    void TestTranscoding(){
-        String s = "";
-        byte[] b = s.getBytes(StandardCharsets.UTF_8);
-        String sa = new String(b, StandardCharsets.UTF_8);
-        System.out.println(sa);
-
-    }
-
-
-    @Test
-    void mergeString(){
-        String a="Hello ";
-        String b="World";
-        String c=a+b;
-        System.out.println(c);
-    }
-
     @Resource
-    private SingleLogDao singleLogDao;
+    private MoveInfoDao moveInfoDao;
 
     @Test
-    void testFinSingleLogAll(){
-        List<SingleLog> singleLogList = singleLogDao.findAll();
-        System.out.println(singleLogList.size());
+    void TestCountPoint() throws ParseException {
 
-    }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date time1 = simpleDateFormat.parse("2020-04-16 00:00:00");
+        Date time2 = simpleDateFormat.parse("2020-04-16 19:15:51");
 
-    @Resource
-    private ApDao apDao;
-    @Test
-    void TestFindAllAp(){
-        List<Ap> apList=apDao.findAll();
-        System.out.println(apList.size());
+        MoveInfo m = moveInfoDao.sPoint("3170211163", time1, time2);
+        System.out.println(m);
     }
 }
 

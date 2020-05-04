@@ -22,8 +22,21 @@ public class MoveInfoServiceImpl implements MoveInfoService {
     private MoveInfoDao moveInfoDao;
 
     @Override
-    public List<MoveInfo> count(String location, String location1, String location2, Date startTime, Date endTime) {
-        return moveInfoDao.findByLocationLikeOrLocationFromLikeOrLocationToLikeAndRecordTimeAfterAndRecordTimeBefore(location, location1, location2, startTime, endTime);
+    // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户
+    public List<MoveInfo> count1(String location, Date startTime, Date endTime) {
+        return moveInfoDao.count1(location, startTime, endTime);
+    }
+
+    @Override
+    // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户
+    public List<String> count2(String location, Date startTime, Date endTime) {
+        return moveInfoDao.peopleIdList(location, startTime, endTime);
+    }
+
+    @Override
+    // description  查询用户离当前时间最近的一次Ap连接信息
+    public MoveInfo sPoint(String peopleId, Date startTime, Date endTime) {
+        return moveInfoDao.sPoint(peopleId, startTime, endTime);
     }
 
 
