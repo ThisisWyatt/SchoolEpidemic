@@ -1,10 +1,8 @@
 package com.smart.go.dao;
 
-import com.smart.go.domain.Ap;
 import com.smart.go.domain.MoveInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;

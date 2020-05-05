@@ -9,6 +9,8 @@ import com.smart.go.domain.SingleLog;
 import com.smart.go.domain.Teacher;
 import com.smart.go.service.BuildMoveInfo;
 import com.smart.go.service.ReadAndExactDataService;
+import com.smart.go.service.impl.BuildMoveInfoImpl;
+import com.smart.go.service.impl.ReadAndExactDataServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -35,29 +37,29 @@ import java.util.regex.Pattern;
 
 @SpringBootTest
 class GoApplicationTests {
+
     @Test
     void contextLoads() {
     }
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    @Resource
+    private ReadAndExactDataServiceImpl readAndExactDataService;
+
+    @Test
+    void TestReadExtract() throws IOException, ParseException {
+        readAndExactDataService.TestReadLog();
+    }
 
     @Resource
-    private BuildMoveInfo buildMoveInfo;
+    private BuildMoveInfoImpl buildMoveInfo;
 
     @Test
     void TestBuildMoveInfo() {
         long currentTime = System.currentTimeMillis();
         buildMoveInfo.buildMoveInfo();
         logger.info("All  cost: " + (System.currentTimeMillis() - currentTime) + " ms");
-    }
-
-    @Resource
-    private ReadAndExactDataService readAndExactDataService;
-
-    @Test
-    void TestReadExtract() throws IOException, ParseException {
-        readAndExactDataService.TestReadLog();
     }
 
     @Test
