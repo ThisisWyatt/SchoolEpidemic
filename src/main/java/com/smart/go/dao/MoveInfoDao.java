@@ -30,4 +30,7 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo,String> {
     @Query(value = "SELECT * FROM go.move_info where ( people_id=?1 and record_time< ?3 and record_time > ?2 ) ORDER BY ?3 -record_time ASC limit 1 ;", nativeQuery = true)
     MoveInfo sPoint(String peopleId, Date startTime, Date endTime);
 
+    // description 根据人员Id查询在某个时间段的ap连接信息
+    List<MoveInfo> getByPeopleIdAndRecordTimeBetween(String peopleId, Date startTime, Date endTime);
+
 }

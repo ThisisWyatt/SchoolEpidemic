@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Description 统计实时的人数（较短时间间隔内）
+ * Description 统计人数
  * Author cloudr
  * Date 2020/5/3 22:14
  * Version 1.0
@@ -61,6 +61,5 @@ public class CountController {
         return String.valueOf(PeopleIdList.size());
 
     }
-
 
 }

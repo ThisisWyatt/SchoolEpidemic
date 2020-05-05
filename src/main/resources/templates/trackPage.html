@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>trackPage</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/track/trackSinglePeople}" method="post">
+        <input th:type="text" th:name="Id"><br>
+        <input th:type="text" th:name="startTime"><br>
+        <input th:type="text" th:name="endTime"><br>
+        <input type="submit" value="查询">
+    </form>
+</div>
+</body>
+</html>
