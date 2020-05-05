@@ -1,6 +1,7 @@
 package com.smart.go.controller;
 
 import com.smart.go.domain.MoveInfo;
+import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.MoveInfoServiceImpl;
 import com.smart.go.util.CountMessage;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
@@ -28,6 +29,8 @@ public class CountController {
 
     @Resource
     private MoveInfoServiceImpl moveInfoService;
+    @Resource
+    private CountPeopleServiceImpl countPeopleService;
 
     @RequestMapping("/conditionPage1")
     public String conditionPage() {
@@ -36,39 +39,16 @@ public class CountController {
 
     @ResponseBody
     @RequestMapping("/queryInPeriod")
+    // description 查询目标时间段内在该地点有操作的所有用户
     public String queryInPeriod(@ModelAttribute(value = "message") CountMessage message) throws ParseException {
 
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-        Date startTime = sdf1.parse(message.getStartTime());
-        Date endTime = sdf1.parse(message.getEndTime());
-        Date zeroTime = sdf2.parse(message.getStartTime());//当天凌晨时间
+        List<String> countPeopleInPeriod = countPeopleService.countInPeriod(message.getStartTime(), message.getEndTime(), message.getLocation());
 
-        String location = message.getLocation();
+        for (String m : countPeopleInPeriod)
+            System.out.println(m);
 
-        // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户
-        List<MoveInfo> moveInfoList1 = moveInfoService.count1("%" + location + "%", startTime, endTime);
-        System.out.println("列表1长度为：" + moveInfoList1.size());
+        return String.valueOf(countPeopleInPeriod.size());
 
-        // description 查询在当天凌晨0点到某一时间点前全部连接过用户Id (add  location_to)
-        List<String> peopleIdList = moveInfoService.count2("%" + location + "%", zeroTime, endTime);
-        List<MoveInfo> moveInfoList2 = new LinkedList<>();
-        for (String peopleId : peopleIdList) {
-            //如果用户距离这个时间点最近的AP行为为add、location_from则表示已经接入当前点
-            MoveInfo m = moveInfoService.sPoint(peopleId, startTime, endTime);
-            if (m != null) {
-                if (m.getLocation() != null && m.getApType().equals("增加") && m.getLocation().startsWith(location))
-                    moveInfoList2.add(m);
-                else if (m.getLocationTo() != null && m.getLocationTo().startsWith(location))
-                    moveInfoList2.add(m);
-            }
-        }
-
-        //求并集
-        moveInfoList1.removeAll(moveInfoList2);
-        moveInfoList1.addAll(moveInfoList2);
-
-        return String.valueOf(moveInfoList1.size());
     }
 
     @ResponseBody
@@ -76,35 +56,10 @@ public class CountController {
     // description 查询当前点接入的所有用户 (add  location_from)
     public String queryAtPoint(@ModelAttribute(value = "message") CountMessage message) throws ParseException {
 
-        //当天凌晨时间
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-        Date startTime = sdf1.parse(message.getStartTime());
-        //目标时间点
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date endTime = sdf2.parse(message.getStartTime());
+        List<String> PeopleIdList = countPeopleService.countAtPoint(message.getStartTime(), message.getLocation());
 
-        String location = message.getLocation();
+        return String.valueOf(PeopleIdList.size());
 
-        //查询当天凌晨0点到当天某一时间点前某个地点所有 接入、切换入的所有用户ID (add  location_to)
-        List<String> peopleIdList = moveInfoService.count2("%" + location + "%", startTime, endTime);
-        List<MoveInfo> moveInfoList = new LinkedList<>();
-        System.out.println("peopleIdList.size()=" + peopleIdList.size());
-        for (String peopleId : peopleIdList) {
-            //如果用户距离这个时间点最近的AP行为为add、location_from则表示已经接入当前点
-            MoveInfo m = moveInfoService.sPoint(peopleId, startTime, endTime);
-            if (m != null) {
-                if (m.getLocation() != null && m.getApType().equals("增加") && m.getLocation().startsWith(location))
-                    moveInfoList.add(m);
-                else if (m.getLocationTo() != null && m.getLocationTo().startsWith(location))
-                    moveInfoList.add(m);
-            }
-        }
-
-        for (MoveInfo m : moveInfoList) {
-            System.out.println(m);
-        }
-
-        return String.valueOf(moveInfoList.size());
     }
 
 

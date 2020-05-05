@@ -17,7 +17,7 @@ import java.util.List;
 public interface MoveInfoService {
 
     // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户
-    List<MoveInfo> count1(String location, Date startTime, Date endTime);
+    List<String> count1(String location, Date startTime, Date endTime);
 
     // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户
     List<String> count2(String location, Date startTime, Date endTime);
