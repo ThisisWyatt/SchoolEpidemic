@@ -12,6 +12,7 @@ import com.smart.go.service.ReadAndExactDataService;
 import com.smart.go.service.impl.BuildMoveInfoImpl;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.ReadAndExactDataServiceImpl;
+import com.smart.go.service.impl.TrackPeopleServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -100,6 +101,20 @@ class GoApplicationTests {
         for (String s : l)
             System.out.println(s);
     }
+
+
+    @Resource
+    private TrackPeopleServiceImpl trackPeopleService;
+
+    @Test
+    void TestTrack() throws ParseException {
+
+        trackPeopleService.trackSinglePeople("105010", "2020-4-12", "2020-4-15");
+
+    }
+
+
+
 }
 
 
