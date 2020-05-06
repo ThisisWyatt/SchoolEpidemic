@@ -1,6 +1,6 @@
 package com.smart.go.service;
 
-import com.smart.go.domain.MoveInfo;
+import com.smart.go.content.PathInfo;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -17,5 +17,5 @@ import java.util.List;
 public interface TrackPeopleService {
 
     // description 根据人员Id查询在某个时间段的ap连接信息
-    List<MoveInfo> trackSinglePeople(String id, String startTime0, String endTime0) throws ParseException;
+    List<PathInfo> trackSinglePeople(String id, String startTime0, String endTime0) throws ParseException;
 }

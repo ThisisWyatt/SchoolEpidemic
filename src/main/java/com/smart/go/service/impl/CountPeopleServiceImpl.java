@@ -35,7 +35,6 @@ public class CountPeopleServiceImpl implements CountPeopleService {
 
         // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户
         List<String> moveInfoList1 = moveInfoService.count1("%" + location + "%", startTime, endTime);
-        System.out.println("列表1长度为：" + moveInfoList1.size());
 
         // description 查询在当天凌晨0点到某一时间点前全部连接过用户Id (add  location_to)
         List<String> peopleIdList = moveInfoService.count2("%" + location + "%", zeroTime, endTime);
@@ -50,11 +49,6 @@ public class CountPeopleServiceImpl implements CountPeopleService {
                     moveInfoList2.add(m.getPeopleId());
             }
         }
-        System.out.println("列表2长度为：" + moveInfoList2.size());
-        for (String m : moveInfoList2)
-            System.out.println(m);
-        System.out.println("-------------------------------------");
-
 
         //求并集
         moveInfoList1.removeAll(moveInfoList2);

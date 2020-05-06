@@ -13,5 +13,13 @@
         <input type="submit" value="查询">
     </form>
 </div>
+<div>
+    <form th:action="@{/track/trackRelatedPeople}" method="post">
+        <input th:type="text" th:name="Id"><br>
+        <input th:type="text" th:name="startTime"><br>
+        <input th:type="text" th:name="endTime"><br>
+        <input type="submit" value="查询">
+    </form>
+</div>
 </body>
 </html>

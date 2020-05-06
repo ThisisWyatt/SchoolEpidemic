@@ -29,7 +29,7 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
     @Override
     // description 根据人员Id查询在某个时间段的ap连接信息
-    public List<MoveInfo> trackSinglePeople(String id, String startTime0, String endTime0) throws ParseException {
+    public List<PathInfo> trackSinglePeople(String id, String startTime0, String endTime0) throws ParseException {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -38,9 +38,6 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
         List<MoveInfo> moveInfoList = moveInfoDao.getByPeopleIdAndRecordTimeBetween(id, startTime, endTime);
         List<PathInfo> pathInfoList = new LinkedList<>();
-        for (MoveInfo m : moveInfoList)
-            System.out.println(m);
-        System.out.println("---------------------------------------------------");
         for (int i = 1; i < moveInfoList.size(); i++) {
             MoveInfo m1 = moveInfoList.get(i - 1);
             MoveInfo m2 = moveInfoList.get(i);
@@ -60,10 +57,6 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             }
 
         }
-        for (PathInfo m : pathInfoList)
-            System.out.println(m);
-        System.out.println("---------------------------------------------------");
-        return moveInfoDao.getByPeopleIdAndRecordTimeBetween(id, startTime, endTime);
-
+        return pathInfoList;
     }
 }
