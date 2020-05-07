@@ -1,6 +1,9 @@
 package com.smart.go.controller;
 
+import com.smart.go.content.CountPeople;
+import com.smart.go.dao.ApDao;
 import com.smart.go.domain.MoveInfo;
+import com.smart.go.domain.apProjection;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.MoveInfoServiceImpl;
 import com.smart.go.util.CountMessage;
@@ -35,6 +38,29 @@ public class CountController {
     @RequestMapping("/conditionPage1")
     public String conditionPage() {
         return "conditionPage";
+    }
+
+    @Resource
+    private ApDao apDao;
+
+    @ResponseBody
+    @RequestMapping("/queryInPeriodInAllBuilding")
+    public String queryInPeriodInAllBuilding(@ModelAttribute(value = "message") CountMessage message) throws ParseException {
+        String startTime = message.getStartTime();
+        String endTime = message.getEndTime();
+
+        List<String> buildingList = apDao.getBuildingList();
+        List<CountPeople> countPeopleList = new LinkedList<>();
+
+        for (String building : buildingList) {
+            int num = countPeopleService.countInPeriod(startTime, endTime, building).size();
+            countPeopleList.add(new CountPeople(building, num));
+        }
+
+        for (CountPeople c : countPeopleList)
+            System.out.println(c);
+
+        return null;
     }
 
     @ResponseBody

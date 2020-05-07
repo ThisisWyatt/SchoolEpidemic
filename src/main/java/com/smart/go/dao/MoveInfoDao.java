@@ -19,7 +19,7 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo,String> {
     List<MoveInfo> mList(String peopleId);
 
     // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户Id select * from move_info where location like ‘location’ Or locationFrom like 'location' Or locationTo like ‘location’ and recordTime < endTime and recordTime > time
-    @Query(value = "SELECT distinct  people_id from go.move_info where (location like ?1 or  location_from like ?1 or location_to like ?1) and (record_time BETWEEN ?2 and ?3 );", nativeQuery = true)
+    @Query(value = "select distinct  people_id from go.move_info where (location like ?1 or  location_from like ?1 or location_to like ?1) and (record_time BETWEEN ?2 and ?3 );", nativeQuery = true)
     List<String> count1(String location, Date startTime, Date endTime);
 
     // description 查询当天凌晨0点到当天某一时间点某个地点所有 接入、删除、切换入的所有用户Id  select * from move_info where location like ‘location’ Or locationTo like ‘location’ and recordTime < endTime and recordTime > time

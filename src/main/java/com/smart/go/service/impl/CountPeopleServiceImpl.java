@@ -24,6 +24,7 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     @Resource
     private MoveInfoServiceImpl moveInfoService;
 
+
     @Override
     public List<String> countInPeriod(String startTimeStr, String endTimeStr, String location) throws ParseException {
 

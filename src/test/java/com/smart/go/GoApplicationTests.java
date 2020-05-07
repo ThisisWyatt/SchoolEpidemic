@@ -121,7 +121,10 @@ class GoApplicationTests {
     @Test
     void TestJson() throws ParseException {
 
-        List<PathInfo> list = trackPeopleService.trackSinglePeople("204545", "2020-4-12", "2020-4-15");
+        String str = "2020-4-12 00:00:00)";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = format.parse(str);
+        System.out.println(d);
 
     }
 

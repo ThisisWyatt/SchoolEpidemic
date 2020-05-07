@@ -32,10 +32,28 @@
             </tr>
             <tr>
                 <td><input type="submit" th:value="提交"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div>
+    <form th:action="@{/count/queryInPeriodInAllBuilding}" method="post">
+        <table>
+            <tr>
+                <td>请输入查询时间段:</td>
+                >
+                <td>起始时间：<input th:type="text" th:name="StartTime"></td>
+                <td>截止时间:<input th:type="text" th:name="EndTime"></td>
+                >
+            </tr>
+            <tr>
+                <td><input type="submit" th:value="提交"></td>
                 >
             </tr>
         </table>
     </form>
 </div>
+
 </body>
 </html>
