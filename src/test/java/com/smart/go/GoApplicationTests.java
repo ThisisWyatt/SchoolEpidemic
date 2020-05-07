@@ -1,5 +1,6 @@
 package com.smart.go;
 
+import com.smart.go.content.PathInfo;
 import com.smart.go.dao.ApDao;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.dao.SingleLogDao;
@@ -13,6 +14,7 @@ import com.smart.go.service.impl.BuildMoveInfoImpl;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.ReadAndExactDataServiceImpl;
 import com.smart.go.service.impl.TrackPeopleServiceImpl;
+import com.smart.go.util.ResultBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -110,6 +112,16 @@ class GoApplicationTests {
     void TestTrack() throws ParseException {
 
         trackPeopleService.trackSinglePeople("204545", "2020-4-12", "2020-4-15");
+
+    }
+
+    @Resource
+    private ResultBean resultBean;
+
+    @Test
+    void TestJson() throws ParseException {
+
+        List<PathInfo> list = trackPeopleService.trackSinglePeople("204545", "2020-4-12", "2020-4-15");
 
     }
 

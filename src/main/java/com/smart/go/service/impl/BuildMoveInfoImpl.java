@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * Description
- * Author cloudr
+ * Author cloudr 将从日志文件中得到的aclog_result表的数据联合其他几张表存入move_info中
  * Date 2020/5/5 21:35
  * Version 1.0
  **/

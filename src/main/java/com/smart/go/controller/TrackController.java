@@ -39,7 +39,6 @@ public class TrackController {
     public String trackSinglePeople(TrackFromMessage message) throws ParseException {
 
         List<PathInfo> pathInfoList = trackPeopleService.trackSinglePeople(message.getId(), message.getStartTime(), message.getEndTime());
-
         return "success";
     }
 
@@ -76,6 +75,9 @@ public class TrackController {
         //去重
         LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>(relatePeopleList);
         relatePeopleList = new LinkedList<>(linkedHashSet);
+
+        for (String id : relatePeopleList)
+            System.out.println(id);
 
         return "success";
     }
