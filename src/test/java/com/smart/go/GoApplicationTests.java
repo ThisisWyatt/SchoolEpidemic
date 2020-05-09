@@ -81,28 +81,28 @@ class GoApplicationTests {
     @Resource
     private CountPeopleServiceImpl countPeopleService;
 
-    @Test
-    void TestCountPoint() throws ParseException {
+//    @Test
+//    void TestCountPoint() throws ParseException {
+//
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date time1 = simpleDateFormat.parse("2020-04-13 08:44:26");
+//        Date time2 = simpleDateFormat.parse("2020-04-13 11:44:26");
+//
+//        List<String> moveInfoList = countPeopleService.countInPeriod("2020-04-13 08:44:26", "2020-04-13 11:44:26", "教二楼");
+//
+//        for (String m : moveInfoList) {
+//            System.out.println(m);
+//        }
+//    }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date time1 = simpleDateFormat.parse("2020-04-13 08:44:26");
-        Date time2 = simpleDateFormat.parse("2020-04-13 11:44:26");
 
-        List<String> moveInfoList = countPeopleService.countInPeriod("2020-04-13 08:44:26", "2020-04-13 11:44:26", "教二楼");
-
-        for (String m : moveInfoList) {
-            System.out.println(m);
-        }
-    }
-
-
-    @Test
-    void TestSPoint() throws ParseException {
-        List<String> l = countPeopleService.countAtPoint("2020-04-13 12:44:26", "教二楼");
-        System.out.println(l.size());
-        for (String s : l)
-            System.out.println(s);
-    }
+//    @Test
+//    void TestSPoint() throws ParseException {
+//        List<String> l = countPeopleService.countAtPoint("2020-04-13 12:44:26", "教二楼");
+//        System.out.println(l.size());
+//        for (String s : l)
+//            System.out.println(s);
+//    }
 
 
     @Resource

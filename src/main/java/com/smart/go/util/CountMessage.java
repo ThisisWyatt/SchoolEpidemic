@@ -1,5 +1,7 @@
 package com.smart.go.util;
 
+import java.util.Date;
+
 /**
  * Description
  * Author cloudr 整合前端查询统计人数条件的工具类
@@ -7,25 +9,25 @@ package com.smart.go.util;
  * Version 1.0
  **/
 public class CountMessage {
-    private String StartTime;
+    private String startTime;
     private String endTime;
-    private String Location;
-
-    public CountMessage(String startTime, String endTime, String location) {
-        StartTime = startTime;
-        this.endTime = endTime;
-        Location = location;
-    }
+    private String location;
 
     public CountMessage() {
     }
 
+    public CountMessage(String startTime, String endTime, String location) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.location = location;
+    }
+
     public String getStartTime() {
-        return StartTime;
+        return startTime;
     }
 
     public void setStartTime(String startTime) {
-        StartTime = startTime;
+        this.startTime = startTime;
     }
 
     public String getEndTime() {
@@ -37,10 +39,10 @@ public class CountMessage {
     }
 
     public String getLocation() {
-        return Location;
+        return location;
     }
 
     public void setLocation(String location) {
-        Location = location;
+        this.location = location;
     }
 }

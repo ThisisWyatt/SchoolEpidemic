@@ -1,5 +1,7 @@
 package com.smart.go.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.smart.go.content.CountPeople;
 import com.smart.go.dao.ApDao;
 import com.smart.go.domain.MoveInfo;
@@ -7,9 +9,13 @@ import com.smart.go.domain.apProjection;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.MoveInfoServiceImpl;
 import com.smart.go.util.CountMessage;
+import com.smart.go.util.ResultBean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,6 +36,9 @@ import java.util.List;
 @RequestMapping("/count")
 public class CountController {
 
+    private Logger logger = LogManager.getLogger(this.getClass());
+
+
     @Resource
     private MoveInfoServiceImpl moveInfoService;
     @Resource
@@ -45,47 +54,36 @@ public class CountController {
 
     @ResponseBody
     @RequestMapping("/queryInPeriodInAllBuilding")
-    public String queryInPeriodInAllBuilding(@ModelAttribute(value = "message") CountMessage message) throws ParseException {
-        String startTime = message.getStartTime();
-        String endTime = message.getEndTime();
+    // description  查询目标时间段所有建筑中Ap接入人数
+    public ResultBean queryInPeriodInAllBuilding(@RequestBody String params) throws ParseException {
 
-        List<String> buildingList = apDao.getBuildingList();
-        List<CountPeople> countPeopleList = new LinkedList<>();
+        CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
+        });
 
-        for (String building : buildingList) {
-            int num = countPeopleService.countInPeriod(startTime, endTime, building).size();
-            countPeopleList.add(new CountPeople(building, num));
-        }
-
-        for (CountPeople c : countPeopleList)
-            System.out.println(c);
-
-        return null;
+        return countPeopleService.countInPeriodInAllBuildings(message);
     }
 
     @ResponseBody
     @RequestMapping("/queryInPeriod")
     // description 查询目标时间段内在该地点有操作的所有用户
-    public String queryInPeriod(@ModelAttribute(value = "message") CountMessage message) throws ParseException {
+    public ResultBean queryInPeriod(@RequestBody String params) throws ParseException {
 
-        List<String> countPeopleInPeriod = countPeopleService.countInPeriod(message.getStartTime(), message.getEndTime(), message.getLocation());
+        CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
+        });
 
-        for (String m : countPeopleInPeriod)
-            System.out.println(m);
-
-        return String.valueOf(countPeopleInPeriod.size());
-
+        return countPeopleService.countInPeriod(message);
     }
 
     @ResponseBody
     @RequestMapping("/queryAtPoint")
     // description 查询当前点接入的所有用户 (add  location_from)
-    public String queryAtPoint(@ModelAttribute(value = "message") CountMessage message) throws ParseException {
+    public ResultBean queryAtPoint(@RequestBody String params) throws ParseException {
 
-        List<String> PeopleIdList = countPeopleService.countAtPoint(message.getStartTime(), message.getLocation());
+        CountMessage countMessage = JSON.parseObject(params, new TypeReference<CountMessage>() {
+        });
+        logger.info("查询条件为" + countMessage);
 
-        return String.valueOf(PeopleIdList.size());
-
+        return countPeopleService.countAtPoint(countMessage);
     }
 
 }
