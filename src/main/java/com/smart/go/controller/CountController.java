@@ -2,29 +2,20 @@ package com.smart.go.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.smart.go.content.CountPeople;
 import com.smart.go.dao.ApDao;
-import com.smart.go.domain.MoveInfo;
-import com.smart.go.domain.apProjection;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.MoveInfoServiceImpl;
-import com.smart.go.util.CountMessage;
+import com.smart.go.content.CountMessage;
 import com.smart.go.util.ResultBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Description 统计人数

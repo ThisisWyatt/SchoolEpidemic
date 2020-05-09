@@ -1,17 +1,19 @@
 package com.smart.go.service.impl;
 
+import com.smart.go.content.CountMessage;
 import com.smart.go.content.PathInfo;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.TrackPeopleService;
+import com.smart.go.util.ResultBean;
+import com.smart.go.util.TrackFromMessage;
 import org.springframework.stereotype.Service;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.annotation.Resource;
-import java.rmi.MarshalledObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,14 +31,25 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
     @Override
     // description 根据人员Id查询在某个时间段的ap连接信息
-    public List<PathInfo> trackSinglePeople(String id, String startTime0, String endTime0) throws ParseException {
+    public ResultBean trackSinglePeople(TrackFromMessage message) throws ParseException {
+
+
+        ResultBean resultBean = new ResultBean();
+        resultBean.setDataList(trackSinglePeopleUtil(message));
+        resultBean.setMessage("查询成功");
+        resultBean.setSuccess(true);
+
+        return resultBean;
+    }
+
+    private List<PathInfo> trackSinglePeopleUtil(TrackFromMessage message) throws ParseException {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime = sdf1.parse(startTime0);
-        Date endTime = sdf1.parse(endTime0);
+        Date startTime = sdf1.parse(message.getStartTime());
+        Date endTime = sdf1.parse(message.getEndTime());
 
-        List<MoveInfo> moveInfoList = moveInfoDao.getByPeopleIdAndRecordTimeBetween(id, startTime, endTime);
+        List<MoveInfo> moveInfoList = moveInfoDao.getByPeopleIdAndRecordTimeBetween(message.getId(), startTime, endTime);
         List<PathInfo> pathInfoList = new LinkedList<>();
         for (int i = 1; i < moveInfoList.size(); i++) {
             MoveInfo m1 = moveInfoList.get(i - 1);
@@ -55,8 +68,54 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
                 pathInfoList.add(new PathInfo(locationFrom, locationTo, m1.getRecordTime(), m2.getRecordTime()));
 
             }
+        }
+
+        return pathInfoList;
+    }
+
+
+    @Resource
+    private CountPeopleServiceImpl countPeopleService;
+
+
+    @Override
+    // description 根据人员Id查询在某个时间段接触过的人员Id
+    public ResultBean trackRelatedPeople(TrackFromMessage message) throws ParseException {
+        ResultBean resultBean = new ResultBean();
+
+        List<String> relatePeopleList = new LinkedList<>();
+
+        List<PathInfo> pathInfoList = trackSinglePeopleUtil(message);
+        for (PathInfo singlePoint : pathInfoList) {
+            String location = singlePoint.getLocationFrom();
+            Date startTime = singlePoint.getStartTime();
+            Date endTime = singlePoint.getEndTime();
+            CountMessage message1 = new CountMessage(startTime.toString(), endTime.toString(), location);
+            List<String> relateList1 = countPeopleService.countInPeriodUtil(message1);
+
+            List<String> relateList2 = new LinkedList<>(); //如果LocationFrom和LocationTo不是同一个地点则再查询一次
+            if (!singlePoint.getLocationFrom().equals(singlePoint.getLocationTo())) {
+                CountMessage message2 = new CountMessage(startTime.toString(), endTime.toString(), location);
+                relateList2 = countPeopleService.countInPeriodUtil(message2);
+            }
+            //求并集
+            relateList1.removeAll(relateList2);
+            relateList1.addAll(relateList2);
+
+            relatePeopleList.addAll(relateList1);
 
         }
-        return pathInfoList;
+        // 排除自身
+        relatePeopleList.removeIf(o -> o.equals(message.getId()));
+
+        //去重
+        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>(relatePeopleList);
+        relatePeopleList = new LinkedList<>(linkedHashSet);
+
+        for (String id : relatePeopleList)
+            System.out.println(id);
+
+        resultBean.setDataList(relatePeopleList);
+        return resultBean;
     }
 }

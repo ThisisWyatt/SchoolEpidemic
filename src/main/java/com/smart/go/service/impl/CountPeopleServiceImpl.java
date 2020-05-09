@@ -1,22 +1,14 @@
 package com.smart.go.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.smart.go.content.CountPeople;
 import com.smart.go.dao.ApDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.CountPeopleService;
-import com.smart.go.util.CountMessage;
+import com.smart.go.content.CountMessage;
 import com.smart.go.util.ResultBean;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import sun.plugin2.message.Message;
-import sun.plugin2.message.Serializer;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,6 +33,16 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     @Override
     // description 查询目标时间段内在该地点有操作的所有用户
     public ResultBean countInPeriod(CountMessage message) throws ParseException {
+
+        ResultBean resultBean = new ResultBean();
+        resultBean.setDataList(countInPeriodUtil(message));
+        resultBean.setSuccess(true);
+        resultBean.setMessage("查询成功");
+
+        return resultBean;
+    }
+
+    List<String> countInPeriodUtil(CountMessage message) throws ParseException {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,13 +71,13 @@ public class CountPeopleServiceImpl implements CountPeopleService {
         moveInfoList1.removeAll(moveInfoList2);
         moveInfoList1.addAll(moveInfoList2);
 
-        ResultBean resultBean = new ResultBean();
-        resultBean.setDataList(moveInfoList1);
-        resultBean.setSuccess(true);
-        resultBean.setMessage("查询成功");
-
-        return resultBean;
+        return moveInfoList1;
     }
+
+
+
+
+
 
     @Override
     // description 查询当前点接入的所有用户

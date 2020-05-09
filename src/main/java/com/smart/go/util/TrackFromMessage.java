@@ -7,7 +7,7 @@ package com.smart.go.util;
  * Version 1.0
  **/
 public class TrackFromMessage {
-    private String Id;
+    private String id;
     private String startTime;
     private String endTime;
 
@@ -15,17 +15,17 @@ public class TrackFromMessage {
     }
 
     public TrackFromMessage(String id, String startTime, String endTime) {
-        Id = id;
+        this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getStartTime() {

@@ -108,12 +108,12 @@ class GoApplicationTests {
     @Resource
     private TrackPeopleServiceImpl trackPeopleService;
 
-    @Test
-    void TestTrack() throws ParseException {
-
-        trackPeopleService.trackSinglePeople("204545", "2020-4-12", "2020-4-15");
-
-    }
+//    @Test
+//    void TestTrack() throws ParseException {
+//
+//        trackPeopleService.trackSinglePeople("204545", "2020-4-12", "2020-4-15");
+//
+//    }
 
     @Resource
     private ResultBean resultBean;

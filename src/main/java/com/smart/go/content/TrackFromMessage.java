@@ -1,25 +1,31 @@
-package com.smart.go.util;
-
-import java.util.Date;
+package com.smart.go.content;
 
 /**
  * Description
- * Author cloudr 整合前端查询统计人数条件的工具类
- * Date 2020/5/3 22:32
+ * Author cloudr 保存提交轨迹追踪表单信息
+ * Date 2020/5/6 0:48
  * Version 1.0
  **/
-public class CountMessage {
+public class TrackFromMessage {
+    private String id;
     private String startTime;
     private String endTime;
-    private String location;
 
-    public CountMessage() {
+    public TrackFromMessage() {
     }
 
-    public CountMessage(String startTime, String endTime, String location) {
+    public TrackFromMessage(String id, String startTime, String endTime) {
+        this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.location = location;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getStartTime() {
@@ -36,13 +42,5 @@ public class CountMessage {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 }
