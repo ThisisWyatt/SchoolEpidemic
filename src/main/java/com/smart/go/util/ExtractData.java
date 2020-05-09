@@ -40,7 +40,7 @@ public class ExtractData {
             String dateTime1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(recordTime);
             String userMac = mat.group(1).replace(".", "").toUpperCase();
             String apName = mat.group(2);
-            singleLog=new SingleLog(recordDate,userMac,apName,null,null,3);
+            singleLog = new SingleLog(recordDate, userMac, apName, null, null, 3);
         }
         return singleLog;
     }
@@ -66,7 +66,7 @@ public class ExtractData {
             String userMac = mat.group(1).replace(".", "").toUpperCase();
             String apName = mat.group(2);
 
-            singleLog=new SingleLog(recordDate,userMac,apName,null,null,4);
+            singleLog = new SingleLog(recordDate, userMac, apName, null, null, 4);
         }
         return singleLog;
     }
@@ -92,7 +92,7 @@ public class ExtractData {
             String userMac = mat.group(1).replace(".", "").toUpperCase();
             String apNameFrom = mat.group(2);
             String apNameTo = mat.group(3);
-            singleLog=new SingleLog(recordDate,userMac,null,apNameFrom,apNameTo,1);
+            singleLog = new SingleLog(recordDate, userMac, null, apNameFrom, apNameTo, 1);
         }
         return singleLog;
     }
@@ -117,21 +117,21 @@ public class ExtractData {
             String userMac = mat.group(1).replace(".", "").toUpperCase();
             String apNameFrom = mat.group(2);
             String apNameTo = mat.group(3);
-            singleLog=new SingleLog(recordDate,userMac,null,apNameFrom,apNameTo,2);
+            singleLog = new SingleLog(recordDate, userMac, null, apNameFrom, apNameTo, 2);
         }
         return singleLog;
     }
 
     public SingleLog dispose(String messages) throws ParseException {
-        SingleLog singleLog=null;
+        SingleLog singleLog = null;
         if (messages.contains(Content.USER_ADD))
-            singleLog=disposeAdd(messages);
+            singleLog = disposeAdd(messages);
         else if (messages.contains(Content.USER_DEL))
-            singleLog=disposeDelete(messages);
+            singleLog = disposeDelete(messages);
         else if (messages.contains(Content.USER_STACHANGE))
-            singleLog=disposeChange(messages);
+            singleLog = disposeChange(messages);
         else if (messages.contains(Content.USER_ROAM))
-            singleLog=disposeRemove(messages);
+            singleLog = disposeRemove(messages);
         return singleLog;
     }
 }

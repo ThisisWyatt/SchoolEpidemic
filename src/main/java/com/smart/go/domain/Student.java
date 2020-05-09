@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "student_info")
 public class Student {
     @Id
-    @Column(name = "STUDENT_NO",length = 190)   //学号
+    @Column(name = "STUDENT_NO", length = 190)   //学号
     private String studentNo;
     @Column(name = "NAME")                      //姓名
     private String name;

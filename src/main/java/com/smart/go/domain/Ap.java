@@ -16,7 +16,7 @@ public class Ap {
     @Column(name = "IP_ADDRESS")    //IP地址
     private String ipAddress;
     @Id
-    @Column(name = "MAC_ADDRESS",length = 190)   //MAC地址
+    @Column(name = "MAC_ADDRESS", length = 190)   //MAC地址
     private String macAddress;
     @Column(name = "CAMPUS")        // 校区
     private String campus;

@@ -49,9 +49,9 @@ public class MoveInfoMultiKeys implements Serializable {
 
     @Override
     public int hashCode() {
-        int code=17;
-        code=code*31+(peopleId!=null?peopleId.hashCode():0);
-        code=code*31+(recordTime!=null?recordTime.hashCode():0);
+        int code = 17;
+        code = code * 31 + (peopleId != null ? peopleId.hashCode() : 0);
+        code = code * 31 + (recordTime != null ? recordTime.hashCode() : 0);
         return code;
     }
 }

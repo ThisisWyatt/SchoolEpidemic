@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Author Cloudr
  * Date 2020/4/24 2:38
  **/
-public interface TeacherDao extends JpaRepository<Teacher,String> {
+public interface TeacherDao extends JpaRepository<Teacher, String> {
 }

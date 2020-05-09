@@ -2,10 +2,11 @@
 <configuration status="WARN">
     <appenders>
         <Console name="Console" target="SYSTEM_OUT">
-<!--            指定日志输出格式-->
+            <!--            指定日志输出格式-->
             <PatternLayout pattern="[%d{HH:mm:ss:SS}] [%p] - %l - %m%n"/>
         </Console>
-        <RollingFile name="RollingFileInfo" fileName="C:/Users/life/Desktop/goInfo.log" filePattern="Y:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log}">
+        <RollingFile name="RollingFileInfo" fileName="C:/Users/life/Desktop/goInfo.log"
+                     filePattern="Y:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log}">
             <Filters>
                 <ThresholdFilter level="INFO"/>
             </Filters>
@@ -20,7 +21,7 @@
     <loggers>
         <root level="INFO">
             <appender-ref ref="Console"/>
-<!--            <appender-ref ref="RollingFileInfo"/>-->
+            <!--            <appender-ref ref="RollingFileInfo"/>-->
         </root>
     </loggers>
 </configuration>

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ApDao extends JpaRepository<Ap,String> {
+public interface ApDao extends JpaRepository<Ap, String> {
 
     Ap findByApName(String apName);
 

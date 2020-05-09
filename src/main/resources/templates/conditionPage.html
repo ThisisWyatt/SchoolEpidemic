@@ -9,13 +9,16 @@
     <form th:action="@{/count/queryInPeriod}" method="post">
         <table>
             <tr>
-                <td>请输入查询条件: </td>>
+                <td>请输入查询条件:</td>
+                >
                 <td>起止：<input th:type="text" th:name="StartTime"></td>
                 <td>结束：<input th:type="text" th:name="endTime"></td>
-                <td>查询地点:<input th:type="text" th:name="Location"></td>>
+                <td>查询地点:<input th:type="text" th:name="Location"></td>
+                >
             </tr>
             <tr>
-                <td><input type="submit" th:value="提交"> </td>>
+                <td><input type="submit" th:value="提交"></td>
+                >
             </tr>
         </table>
     </form>

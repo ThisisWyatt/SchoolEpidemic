@@ -14,10 +14,10 @@ import java.io.Serializable;
 @IdClass(ApUserMultiKeys.class)
 public class ApUser implements Serializable {
     @Id
-    @Column(name = "MAC_ADDRESS",length = 190)   //用户mac地址
+    @Column(name = "MAC_ADDRESS", length = 190)   //用户mac地址
     private String macAddress;
     @Id
-    @Column(name = "USER_ID",length = 190)       // 用户ID
+    @Column(name = "USER_ID", length = 190)       // 用户ID
     private String userId;
     @Column(name = "USER_NAME")     //用户姓名
     private String userName;

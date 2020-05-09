@@ -12,7 +12,7 @@ import java.util.List;
  * Author Cloudr
  * Date 2020/4/24 2:25
  **/
-public interface MoveInfoDao extends JpaRepository<MoveInfo,String> {
+public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
 
     // description 测试使用原生SQL
     @Query(value = "select * from go.move_info where move_info.people_id =?1", nativeQuery = true)

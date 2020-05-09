@@ -15,10 +15,10 @@ import javax.persistence.*;
 @IdClass(MoveInfoMultiKeys.class)
 public class MoveInfo implements Serializable {
     @Id
-    @Column(name = "people_id",length = 190)     //学号或职工号
+    @Column(name = "people_id", length = 190)     //学号或职工号
     private String peopleId;
     @Id
-    @Column(name = "record_time",length = 190)   //记录时间
+    @Column(name = "record_time", length = 190)   //记录时间
     private Date recordTime;
     @Column(name = "name")          //姓名
     private String name;

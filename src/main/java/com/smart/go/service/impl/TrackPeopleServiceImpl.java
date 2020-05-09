@@ -87,17 +87,21 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
         List<PathInfo> pathInfoList = trackSinglePeopleUtil(message);
         for (PathInfo singlePoint : pathInfoList) {
-            String location = singlePoint.getLocationFrom();
+
+            String locationFrom = singlePoint.getLocationFrom();
+            String locationTo = singlePoint.getLocationFrom();
             Date startTime = singlePoint.getStartTime();
             Date endTime = singlePoint.getEndTime();
-            CountMessage message1 = new CountMessage(startTime.toString(), endTime.toString(), location);
+
+            CountMessage message1 = new CountMessage(startTime.toString(), endTime.toString(), locationFrom);
             List<String> relateList1 = countPeopleService.countInPeriodUtil(message1);
 
             List<String> relateList2 = new LinkedList<>(); //如果LocationFrom和LocationTo不是同一个地点则再查询一次
             if (!singlePoint.getLocationFrom().equals(singlePoint.getLocationTo())) {
-                CountMessage message2 = new CountMessage(startTime.toString(), endTime.toString(), location);
+                CountMessage message2 = new CountMessage(startTime.toString(), endTime.toString(), locationTo);
                 relateList2 = countPeopleService.countInPeriodUtil(message2);
             }
+
             //求并集
             relateList1.removeAll(relateList2);
             relateList1.addAll(relateList2);
@@ -111,9 +115,6 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
         //去重
         LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>(relatePeopleList);
         relatePeopleList = new LinkedList<>(linkedHashSet);
-
-        for (String id : relatePeopleList)
-            System.out.println(id);
 
         resultBean.setDataList(relatePeopleList);
         return resultBean;
