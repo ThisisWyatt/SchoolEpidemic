@@ -76,7 +76,7 @@ public class CountController {
 
     @ResponseBody
     @RequestMapping("/queryAtPoint")
-    // description 查询当前点接入的所有用户 (add  location_from)
+    // description 查询当前点接入的所有用户
     public ResultBean queryAtPoint(@RequestBody String params) throws ParseException {
 
         CountMessage countMessage = JSON.parseObject(params, new TypeReference<CountMessage>() {

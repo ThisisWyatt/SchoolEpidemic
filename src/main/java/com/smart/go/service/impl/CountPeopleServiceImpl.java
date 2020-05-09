@@ -39,6 +39,7 @@ public class CountPeopleServiceImpl implements CountPeopleService {
 
 
     @Override
+    // description 查询目标时间段内在该地点有操作的所有用户
     public ResultBean countInPeriod(CountMessage message) throws ParseException {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -77,6 +78,7 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     }
 
     @Override
+    // description 查询当前点接入的所有用户
     public ResultBean countAtPoint(CountMessage countMessage) throws ParseException {
 
         //当天凌晨时间
@@ -115,6 +117,7 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     }
 
     @Override
+    // description  查询目标时间段所有建筑中Ap接入人数
     public ResultBean countInPeriodInAllBuildings(CountMessage message) throws ParseException {
 
         List<String> buildingList = apDao.getBuildingList();
