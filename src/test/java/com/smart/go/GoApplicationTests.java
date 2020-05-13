@@ -13,6 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 @SpringBootTest
 class GoApplicationTests {
@@ -83,6 +87,22 @@ class GoApplicationTests {
         System.out.println(p.getPeopleId());
         System.out.println(p.getPeopleName());
         System.out.println(p.getDepartment());
+    }
+
+    @Test
+    void DateTest() throws ParseException {
+
+        String endTimeStr = "2020-04-16 15:00:00";
+        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        Date endTime = format.parse(endTimeStr);
+
+        long length = endTime.getTime();
+        long addLength = 14 * 24 * 60 * 60 * 1000;
+        Date date2 = new Date();
+        date2.setTime(length - addLength);
+        System.out.println(format.format(date2));
+
+
     }
 
 

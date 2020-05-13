@@ -83,6 +83,15 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
         List<String> relatePeopleList = new LinkedList<>();
 
+        // start设置为endTime前14天
+        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        Date endTime1 = format.parse(message.getEndTime());
+        long length = endTime1.getTime();
+        long subtractLength = 14 * 24 * 60 * 60 * 1000;
+        Date startTime1 = new Date();
+        startTime1.setTime(length - subtractLength);
+        message.setStartTime(format.format(startTime1));
+
         List<PathInfo> pathInfoList = trackSinglePeopleUtil(message);
         for (PathInfo singlePoint : pathInfoList) {
 

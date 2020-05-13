@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Description
@@ -58,6 +59,7 @@ public class TrackController {
     public ResultBean trackRelatedPeople(@RequestBody String params) throws ParseException {
         TrackFromMessage message = JSON.parseObject(params, new TypeReference<TrackFromMessage>() {
         });
+
 
         ResultBean resultBean = trackPeopleService.trackRelatedPeople(message);
         if (resultBean.getDataList().size() == 0) {
