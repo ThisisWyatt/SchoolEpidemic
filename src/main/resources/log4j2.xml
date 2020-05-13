@@ -5,7 +5,10 @@
             <!--            指定日志输出格式-->
             <PatternLayout pattern="[%d{HH:mm:ss:SS}] [%p] - %l - %m%n"/>
         </Console>
-        <RollingFile name="RollingFileInfo" fileName="C:/Users/life/Desktop/goInfo.log"
+
+        <!--        <RollingFile name="RollingFileInfo" fileName="C:/Users/life/Desktop/goInfo.log"-->
+        <RollingFile name="RollingFileInfo" fileName="/root/test/goInfo.log"
+
                      filePattern="Y:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log}">
             <Filters>
                 <ThresholdFilter level="INFO"/>

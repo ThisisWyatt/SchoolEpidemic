@@ -1,7 +1,5 @@
 package com.smart.go.content;
 
-import java.util.Date;
-
 /**
  * Description
  * Author cloudr 整合前端查询统计人数条件的工具类

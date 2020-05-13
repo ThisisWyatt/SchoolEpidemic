@@ -6,18 +6,18 @@
 </head>
 <body>
 <div>
-    <form th:action="@{/track/trackSinglePeople}" method="post">
-        <input th:type="text" th:name="Id"><br>
-        <input th:type="text" th:name="startTime"><br>
-        <input th:type="text" th:name="endTime"><br>
+    <form method="post" th:action="@{/track/trackSinglePeople}">
+        <input th:name="Id" th:type="text"><br>
+        <input th:name="startTime" th:type="text"><br>
+        <input th:name="endTime" th:type="text"><br>
         <input type="submit" value="查询">
     </form>
 </div>
 <div>
-    <form th:action="@{/track/trackRelatedPeople}" method="post">
-        <input th:type="text" th:name="Id"><br>
-        <input th:type="text" th:name="startTime"><br>
-        <input th:type="text" th:name="endTime"><br>
+    <form method="post" th:action="@{/track/trackRelatedPeople}">
+        <input th:name="Id" th:type="text"><br>
+        <input th:name="startTime" th:type="text"><br>
+        <input th:name="endTime" th:type="text"><br>
         <input type="submit" value="查询">
     </form>
 </div>

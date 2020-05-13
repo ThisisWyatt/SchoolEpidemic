@@ -2,6 +2,7 @@ package com.smart.go.service.impl;
 
 import com.smart.go.content.CountMessage;
 import com.smart.go.content.PathInfo;
+import com.smart.go.content.PathInfoProjection;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.TrackPeopleService;
@@ -28,6 +29,10 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
     @Resource
     private MoveInfoDao moveInfoDao;
+    @Resource
+    private CountPeopleServiceImpl countPeopleService;
+    @Resource
+    private MoveInfoServiceImpl moveInfoService;
 
     @Override
     // description 根据人员Id查询在某个时间段的ap连接信息
@@ -62,21 +67,14 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             long diffMinutes = diff / (60 * 1000) % 60;
             //如果前后两条记录时间小于5分钟则认为是路过 不计算入行为轨迹
             if (diffMinutes >= 5) {
-
                 String locationFrom = m1.getLocation() != null ? m1.getLocation() : m1.getLocationTo();
                 String locationTo = m2.getLocation() != null ? m2.getLocation() : m2.getLocationTo();
-                pathInfoList.add(new PathInfo(locationFrom, locationTo, m1.getRecordTime(), m2.getRecordTime()));
-
+                pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), locationFrom, locationTo, m1.getRecordTime(), m2.getRecordTime()));
             }
         }
 
         return pathInfoList;
     }
-
-
-    @Resource
-    private CountPeopleServiceImpl countPeopleService;
-
 
     @Override
     // description 根据人员Id查询在某个时间段接触过的人员Id
@@ -115,8 +113,13 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
         //去重
         LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>(relatePeopleList);
         relatePeopleList = new LinkedList<>(linkedHashSet);
+        List<PathInfoProjection> relatePeopleListInfo = new LinkedList<>();
+        for (String s : relatePeopleList) {
+            //根据Id查询出基本信息
+            relatePeopleListInfo.add(moveInfoService.getOneById(s));
+        }
 
-        resultBean.setDataList(relatePeopleList);
+        resultBean.setDataList(relatePeopleListInfo);
         return resultBean;
     }
 }

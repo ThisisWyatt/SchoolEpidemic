@@ -2,10 +2,10 @@ package com.smart.go.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.smart.go.content.CountMessage;
 import com.smart.go.dao.ApDao;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.MoveInfoServiceImpl;
-import com.smart.go.content.CountMessage;
 import com.smart.go.util.ResultBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,14 +35,13 @@ public class CountController {
     private MoveInfoServiceImpl moveInfoService;
     @Resource
     private CountPeopleServiceImpl countPeopleService;
+    @Resource
+    private ApDao apDao;
 
     @RequestMapping("/conditionPage1")
     public String conditionPage() {
         return "conditionPage";
     }
-
-    @Resource
-    private ApDao apDao;
 
     @ResponseBody
     @RequestMapping("/queryInPeriodInAllBuilding")

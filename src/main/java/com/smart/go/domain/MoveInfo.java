@@ -1,8 +1,8 @@
 package com.smart.go.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 /**
  * Description 人员移动信息实体

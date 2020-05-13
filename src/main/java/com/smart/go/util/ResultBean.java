@@ -29,12 +29,16 @@ public class ResultBean {
         this.message = message;
     }
 
-    public void setDataList(List<?> dataList) {
-        this.dataList = dataList;
+    public ResultBean() {
+        super();
     }
 
     public List<?> getDataList() {
         return dataList;
+    }
+
+    public void setDataList(List<?> dataList) {
+        this.dataList = dataList;
     }
 
     public boolean isSuccess() {
@@ -65,11 +69,6 @@ public class ResultBean {
      */
     public void setData(Object data) {
         this.data = data;
-    }
-
-
-    public ResultBean() {
-        super();
     }
 
     @Override

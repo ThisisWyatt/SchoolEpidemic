@@ -1,12 +1,11 @@
 package com.smart.go.service.impl;
 
+import com.smart.go.content.CountMessage;
 import com.smart.go.content.CountPeople;
 import com.smart.go.dao.ApDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.CountPeopleService;
-import com.smart.go.content.CountMessage;
 import com.smart.go.util.ResultBean;
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,9 +1,5 @@
 package com.smart.go.domain;
 
-import org.hibernate.annotations.Proxy;
-import org.springframework.stereotype.Component;
-
-import javax.naming.Name;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;

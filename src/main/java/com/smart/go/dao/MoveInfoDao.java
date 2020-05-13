@@ -1,5 +1,6 @@
 package com.smart.go.dao;
 
+import com.smart.go.content.PathInfoProjection;
 import com.smart.go.domain.MoveInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +34,7 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
     // description 根据人员Id查询在某个时间段的ap连接信息
     List<MoveInfo> getByPeopleIdAndRecordTimeBetween(String peopleId, Date startTime, Date endTime);
 
+    //根据Id查询出基本信息
+    @Query(value = "SELECT distinct people_id as peopleId,name as peopleName,department as department FROM go.move_info where people_id=?1  ;", nativeQuery = true)
+    PathInfoProjection getOneById(String id);
 }

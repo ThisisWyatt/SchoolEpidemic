@@ -1,5 +1,6 @@
 package com.smart.go.service.impl;
 
+import com.smart.go.content.PathInfoProjection;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.MoveInfoService;
@@ -37,6 +38,12 @@ public class MoveInfoServiceImpl implements MoveInfoService {
     // description  查询用户离当前时间最近的一次Ap连接信息
     public MoveInfo sPoint(String peopleId, Date startTime, Date endTime) {
         return moveInfoDao.sPoint(peopleId, startTime, endTime);
+    }
+
+    @Override
+    // description 根据Id查询出基本信息
+    public PathInfoProjection getOneById(String Id) {
+        return moveInfoDao.getOneById(Id);
     }
 
 

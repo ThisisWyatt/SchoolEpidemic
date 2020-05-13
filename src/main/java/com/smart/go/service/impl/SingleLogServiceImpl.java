@@ -1,7 +1,7 @@
 package com.smart.go.service.impl;
 
-import com.smart.go.domain.SingleLog;
 import com.smart.go.dao.SingleLogDao;
+import com.smart.go.domain.SingleLog;
 import com.smart.go.service.SingleLogService;
 import org.springframework.stereotype.Service;
 

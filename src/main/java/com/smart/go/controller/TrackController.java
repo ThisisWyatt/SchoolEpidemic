@@ -2,8 +2,6 @@ package com.smart.go.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.smart.go.content.PathInfo;
-import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.TrackPeopleServiceImpl;
 import com.smart.go.util.ResultBean;
 import com.smart.go.util.TrackFromMessage;
@@ -14,10 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Description
@@ -45,19 +39,36 @@ public class TrackController {
 
         TrackFromMessage message = JSON.parseObject(params, new TypeReference<TrackFromMessage>() {
         });
+        ResultBean resultBean = trackPeopleService.trackSinglePeople(message);
+        if (resultBean.getDataList().size() == 0) {
+            resultBean.setMessage("尚未查询到相关信息");
+            resultBean.setSuccess(false);
+        } else {
+            resultBean.setMessage("查询成功");
+            resultBean.setSuccess(true);
+        }
 
-        return trackPeopleService.trackSinglePeople(message);
+        return resultBean;
     }
 
 
     @ResponseBody
     @RequestMapping("/trackRelatedPeople")
-    // description 根据人员Id查询在某个时间段接触过的人员Id
+    // description 根据人员Id查询在某个时间段接触过的人员基本信息
     public ResultBean trackRelatedPeople(@RequestBody String params) throws ParseException {
         TrackFromMessage message = JSON.parseObject(params, new TypeReference<TrackFromMessage>() {
         });
 
-        return trackPeopleService.trackRelatedPeople(message);
+        ResultBean resultBean = trackPeopleService.trackRelatedPeople(message);
+        if (resultBean.getDataList().size() == 0) {
+            resultBean.setMessage("尚未查询到相关信息");
+            resultBean.setSuccess(false);
+        } else {
+            resultBean.setMessage("查询成功");
+            resultBean.setSuccess(true);
+        }
+
+        return resultBean;
     }
 
 

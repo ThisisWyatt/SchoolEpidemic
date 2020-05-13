@@ -2,7 +2,6 @@ package com.smart.go.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * Description MoveInfo的复合主键类

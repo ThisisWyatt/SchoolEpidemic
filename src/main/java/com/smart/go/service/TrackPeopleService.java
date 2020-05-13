@@ -1,12 +1,10 @@
 package com.smart.go.service;
 
-import com.smart.go.content.PathInfo;
 import com.smart.go.util.ResultBean;
 import com.smart.go.util.TrackFromMessage;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.List;
 
 /**
  * Description

@@ -1,15 +1,7 @@
 package com.smart.go;
 
-import com.smart.go.content.PathInfo;
-import com.smart.go.dao.ApDao;
+import com.smart.go.content.PathInfoProjection;
 import com.smart.go.dao.MoveInfoDao;
-import com.smart.go.dao.SingleLogDao;
-import com.smart.go.domain.Ap;
-import com.smart.go.domain.MoveInfo;
-import com.smart.go.domain.SingleLog;
-import com.smart.go.domain.Teacher;
-import com.smart.go.service.BuildMoveInfo;
-import com.smart.go.service.ReadAndExactDataService;
 import com.smart.go.service.impl.BuildMoveInfoImpl;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.ReadAndExactDataServiceImpl;
@@ -18,68 +10,30 @@ import com.smart.go.util.ResultBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.discovery.ClasspathResourceSelector;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
-import org.springframework.beans.factory.support.MethodOverride;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import sun.reflect.generics.tree.VoidDescriptor;
 
 import javax.annotation.Resource;
-import javax.persistence.Table;
-import java.awt.*;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.Signature;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @SpringBootTest
 class GoApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
-
     private Logger logger = LogManager.getLogger(this.getClass());
-
     @Resource
     private ReadAndExactDataServiceImpl readAndExactDataService;
-
-    @Test
-    void TestReadExtract() throws IOException, ParseException {
-        readAndExactDataService.TestReadLog();
-    }
-
     @Resource
     private BuildMoveInfoImpl buildMoveInfo;
-
-    @Test
-    void TestBuildMoveInfo() {
-        long currentTime = System.currentTimeMillis();
-        buildMoveInfo.buildMoveInfo();
-        logger.info("All  cost: " + (System.currentTimeMillis() - currentTime) + " ms");
-    }
-
-    @Test
-    void Read() throws IOException {
-
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("test.log");
-        assert stream != null;
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
-        System.out.println(br.readLine());
-
-    }
-
     @Resource
     private MoveInfoDao moveInfoDao;
     @Resource
     private CountPeopleServiceImpl countPeopleService;
+    @Resource
+    private TrackPeopleServiceImpl trackPeopleService;
+    @Resource
+    private ResultBean resultBean;
+
+//    @Test
+//    void contextLoads() {
+//    }
 
 //    @Test
 //    void TestCountPoint() throws ParseException {
@@ -104,9 +58,10 @@ class GoApplicationTests {
 //            System.out.println(s);
 //    }
 
-
-    @Resource
-    private TrackPeopleServiceImpl trackPeopleService;
+//    @Test
+//    void TestReadExtract() throws IOException, ParseException {
+//        readAndExactDataService.TestReadLog();
+//    }
 
 //    @Test
 //    void TestTrack() throws ParseException {
@@ -115,19 +70,20 @@ class GoApplicationTests {
 //
 //    }
 
-    @Resource
-    private ResultBean resultBean;
+//    @Test
+//    void TestBuildMoveInfo() {
+//        long currentTime = System.currentTimeMillis();
+//        buildMoveInfo.buildMoveInfo();
+//        logger.info("All  cost: " + (System.currentTimeMillis() - currentTime) + " ms");
+//    }
 
     @Test
-    void TestJson() throws ParseException {
-
-        String str = "2020-4-12 00:00:00)";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date d = format.parse(str);
-        System.out.println(d);
-
+    void testProjection() {
+        PathInfoProjection p = moveInfoDao.getOneById("105010");
+        System.out.println(p.getPeopleId());
+        System.out.println(p.getPeopleName());
+        System.out.println(p.getDepartment());
     }
-
 
 
 }

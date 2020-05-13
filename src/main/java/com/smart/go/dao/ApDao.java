@@ -1,7 +1,6 @@
 package com.smart.go.dao;
 
 import com.smart.go.domain.Ap;
-import com.smart.go.domain.apProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

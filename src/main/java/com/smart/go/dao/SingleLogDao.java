@@ -1,7 +1,6 @@
 package com.smart.go.dao;
 
 import com.smart.go.domain.SingleLog;
-import com.smart.go.domain.SingleLogMultiKeys;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
