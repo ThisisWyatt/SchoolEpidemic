@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,9 +42,12 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
 
 
     @Override
-    public void buildMoveInfo() {
+    public void buildMoveInfo() throws ParseException {
 
-        List<SingleLog> singleLogList = singleLogDao.findAll();
+//        List<SingleLog> singleLogList = singleLogDao.findAll();
+        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
+        Date date = format.parse("2020-04-26");
+        List<SingleLog> singleLogList = singleLogDao.findAllAfter(date);
         List<MoveInfo> moveInfos = new LinkedList<>();
         System.out.println(singleLogList.size());
 
@@ -62,6 +67,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
             String locationTo = null;
             Date recordTime = null;
             String type = null;
+            String campus = null;
 
 
             String apName = null;
@@ -112,6 +118,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     String buildingAddress = ((Ap) ap).getBuildingName();
                     String floorId = ap.getFloorId();
                     String roomId = ap.getRoomId();
+                    campus = ap.getCampus();
                     if (roomId == null)
                         roomId = "";
                     location = buildingAddress + " " + floorId + " " + roomId;
@@ -126,16 +133,17 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     String buildingAddressFrom = apFrom.getBuildingName();
                     String roomIdFrom = apFrom.getRoomId();
                     String floorFrom = apFrom.getFloorId();
+                    campus = apFrom.getCampus();
                     if (roomIdFrom == null)
                         roomIdFrom = "";
-                    locationFrom = buildingAddressFrom + " " + floorFrom + "层" + roomIdFrom;
+                    locationFrom = buildingAddressFrom + " " + floorFrom + " " + roomIdFrom;
 
                     String buildingAddressTo = apTo.getBuildingName();
                     String roomIdTo = apTo.getRoomId();
                     if (roomIdTo == null)
                         roomIdTo = "";
                     String floorTO = apTo.getFloorId();
-                    locationTo = buildingAddressTo + " " + floorTO + "层" + roomIdTo;
+                    locationTo = buildingAddressTo + " " + floorTO + " " + roomIdTo;
                 }
 
 
@@ -151,7 +159,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     type = "删除";
 
 
-                MoveInfo moveInfo = new MoveInfo(studentId, studentName, className, location, locationFrom, locationTo, recordTime, type);
+                MoveInfo moveInfo = new MoveInfo(studentId, studentName, className, location, locationFrom, locationTo, recordTime, type, campus);
                 moveInfos.add(moveInfo);
                 moveInfoDao.save(moveInfo);
             } else {
@@ -176,6 +184,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     String buildingAddress = ap.getBuildingName();
                     String floorId = ap.getFloorId();
                     String roomId = ap.getRoomId();
+                    campus = ap.getCampus();
                     if (roomId == null)
                         roomId = "";
                     location = buildingAddress + " " + floorId + " " + roomId;
@@ -190,16 +199,17 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     String buildingAddressFrom = apFrom.getBuildingName();
                     String roomIdFrom = apFrom.getRoomId();
                     String floorFrom = apFrom.getFloorId();
+                    campus = apFrom.getCampus();
                     if (roomIdFrom == null)
                         roomIdFrom = "";
-                    locationFrom = buildingAddressFrom + " " + floorFrom + "层" + roomIdFrom;
+                    locationFrom = buildingAddressFrom + " " + floorFrom + " " + roomIdFrom;
 
                     String buildingAddressTo = apTo.getBuildingName();
                     String roomIdTo = apTo.getRoomId();
                     String floorTO = apTo.getFloorId();
                     if (roomIdTo == null)
                         roomIdTo = "";
-                    locationTo = buildingAddressTo + " " + floorTO + "层" + roomIdTo;
+                    locationTo = buildingAddressTo + " " + floorTO + " " + roomIdTo;
                 }
 
                 recordTime = singleLog.getRecordTime();
@@ -211,7 +221,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     type = "增加";
                 else
                     type = "删除";
-                MoveInfo moveInfo = new MoveInfo(teacherId, teacherName, department, location, locationFrom, locationTo, recordTime, type);
+                MoveInfo moveInfo = new MoveInfo(teacherId, teacherName, department, location, locationFrom, locationTo, recordTime, type, campus);
                 moveInfos.add(moveInfo);
                 moveInfoDao.save(moveInfo);
             }

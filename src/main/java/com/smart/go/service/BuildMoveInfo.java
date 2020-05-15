@@ -2,6 +2,8 @@ package com.smart.go.service;
 
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+
 /**
  * Description
  * Author Cloudr
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BuildMoveInfo {
 
-    void buildMoveInfo();
+    void buildMoveInfo() throws ParseException;
 
 
 }

@@ -17,11 +17,12 @@ public class PathInfo {
     private String lat;
     private String lng;
     private String time;
+    private String campus;
 
     public PathInfo() {
     }
 
-    public PathInfo(String peopleId, String peopleName, String department, String location, String time, String lat, String lng) {
+    public PathInfo(String peopleId, String peopleName, String department, String location, String time, String lat, String lng, String campus) {
         this.peopleId = peopleId;
         this.peopleName = peopleName;
         this.department = department;
@@ -29,6 +30,7 @@ public class PathInfo {
         this.time = time;
         this.lat = lat;
         this.lng = lng;
+        this.campus = campus;
     }
 
     public PathInfo(String peopleId, String peopleName, String department) {
@@ -91,5 +93,13 @@ public class PathInfo {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String campus) {
+        this.campus = campus;
     }
 }

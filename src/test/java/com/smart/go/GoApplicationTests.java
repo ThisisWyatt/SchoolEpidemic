@@ -39,7 +39,7 @@ class GoApplicationTests {
 
     @Test
     void contextLoads() {
-        String str = "教二楼 2层220";
+        String str = "教二楼 2 220 ";
         System.out.println(str.substring(0, str.indexOf(" ")));
     }
 
@@ -50,7 +50,7 @@ class GoApplicationTests {
     }
 
     @Test
-    void BuildMoveInfoTest() {
+    void BuildMoveInfoTest() throws ParseException {
         buildMoveInfo.buildMoveInfo();
     }
 

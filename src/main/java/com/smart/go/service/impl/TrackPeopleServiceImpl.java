@@ -61,14 +61,13 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             //如果前后两条记录时间小于5分钟则认为是路过 不计算入行为轨迹
             if (diffMinutes >= 5) {
                 if (m1.getLocation() != null) {
-
                     ApInfoProjection a = apDao.getLatLngByBName(m1.getLocation().substring(0, m1.getLocation().indexOf(" "))); //获取位置所在建筑物的地理坐标
-                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocation(), dateFormat.format(m1.getRecordTime()), a.getLat(), a.getLng()));
+                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocation(), dateFormat.format(m1.getRecordTime()), a.getLat(), a.getLng(), m1.getCampus()));
                 } else {
                     ApInfoProjection a1 = apDao.getLatLngByBName(m1.getLocationFrom().substring(0, m1.getLocationFrom().indexOf(" ")));
                     ApInfoProjection a2 = apDao.getLatLngByBName(m1.getLocationTo().substring(0, m1.getLocationTo().indexOf(" ")));
-                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationFrom(), dateFormat.format(m1.getRecordTime()), a1.getLat(), a1.getLng()));
-                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationTo(), dateFormat.format(m1.getRecordTime()), a2.getLat(), a2.getLng()));
+                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationFrom(), dateFormat.format(m1.getRecordTime()), a1.getLat(), a1.getLng(), m1.getCampus()));
+                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationTo(), dateFormat.format(m1.getRecordTime()), a2.getLat(), a2.getLng(), m1.getCampus()));
                 }
             }
         }

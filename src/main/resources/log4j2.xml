@@ -23,8 +23,8 @@
     </appenders>
     <loggers>
         <root level="WARN">
-            <appender-ref ref="Console"/>
-            <!--                        <appender-ref ref="RollingFileInfo"/>-->
+            <!--            <appender-ref ref="Console"/>-->
+            <appender-ref ref="RollingFileInfo"/>
         </root>
     </loggers>
 </configuration>

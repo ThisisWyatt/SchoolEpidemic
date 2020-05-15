@@ -32,22 +32,34 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    public void TestReadLog() throws IOException, ParseException {
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("messages-20200426");
-        assert stream != null;
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
-        while (br.readLine() != null) {
-            String messages = br.readLine();
-            if (messages != null) {
-                SingleLog singleLog = extractData.dispose(messages);
-                if (singleLog != null) {
-                    singleLogService.save(singleLog);
+    public void TestReadLog() {
+        try {
+            InputStream stream = getClass().getClassLoader().getResourceAsStream("messages-20200503");
+            assert stream != null;
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+            while (br.readLine() != null) {
+                String messages = br.readLine();
+                if (messages != null) {
+                    SingleLog singleLog = null;
+                    try {
+                        singleLog = extractData.dispose(messages);
+                    } catch (ParseException parseE) {
+                        logger.error("此条记录中日期信息错误 " + messages);
+                        parseE.printStackTrace();
+                    }
+
+                    if (singleLog != null) {
+                        singleLogService.save(singleLog);
+                    }
+                } else {
+                    logger.info("此条记录为空");
                 }
-            } else {
-                logger.info("此条记录为空");
             }
+            br.close();
+        } catch (IOException ioE) {
+            logger.error("读取日志源文件出错！！！ ");
+            ioE.printStackTrace();
         }
-        br.close();
     }
 
 }

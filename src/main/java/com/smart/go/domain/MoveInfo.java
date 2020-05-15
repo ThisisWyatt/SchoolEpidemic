@@ -32,12 +32,15 @@ public class MoveInfo implements Serializable {
     private String locationTo;
     @Column(name = "ap_type")       //AP变换类型
     private String apType;
+    @Column(name = "campus")
+    private String campus;
+
 
 
     public MoveInfo() {
     }
 
-    public MoveInfo(String peopleId, String name, String department, String location, String locationFrom, String locationTo, Date recordTime, String apType) {
+    public MoveInfo(String peopleId, String name, String department, String location, String locationFrom, String locationTo, Date recordTime, String apType, String campus) {
         this.peopleId = peopleId;
         this.name = name;
         this.department = department;
@@ -46,7 +49,7 @@ public class MoveInfo implements Serializable {
         this.locationTo = locationTo;
         this.recordTime = recordTime;
         this.apType = apType;
-
+        this.campus = campus;
     }
 
 
@@ -112,6 +115,14 @@ public class MoveInfo implements Serializable {
 
     public void setApType(String apType) {
         this.apType = apType;
+    }
+
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String campus) {
+        this.campus = campus;
     }
 
     @Override
