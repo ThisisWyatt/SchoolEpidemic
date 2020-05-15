@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/go?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 369cc
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+
+
