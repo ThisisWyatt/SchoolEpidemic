@@ -1,9 +1,6 @@
 package com.smart.go.service.impl;
 
-import com.smart.go.content.ApInfoProjection;
-import com.smart.go.content.CountMessage;
-import com.smart.go.content.PathInfo;
-import com.smart.go.content.PathInfoProjection;
+import com.smart.go.content.*;
 import com.smart.go.dao.ApDao;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.domain.MoveInfo;
@@ -13,6 +10,7 @@ import com.smart.go.util.TrackFromMessage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Null;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,17 +40,6 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
     // description 根据人员Id查询在某个时间段的ap连接信息
     public ResultBean trackSinglePeople(TrackFromMessage message) throws ParseException {
 
-
-        ResultBean resultBean = new ResultBean();
-        resultBean.setDataList(trackSinglePeopleUtil(message));
-        resultBean.setMessage("查询成功");
-        resultBean.setSuccess(true);
-
-        return resultBean;
-    }
-
-    private List<PathInfo> trackSinglePeopleUtil(TrackFromMessage message) throws ParseException {
-
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startTime = sdf1.parse(message.getStartTime());
@@ -67,13 +54,57 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             Date time1 = m1.getRecordTime();
             Date time2 = m2.getRecordTime();
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+
+            long diff = time2.getTime() - time1.getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
+            //如果前后两条记录时间小于5分钟则认为是路过 不计算入行为轨迹
+            if (diffMinutes >= 5) {
+                if (m1.getLocation() != null) {
+
+                    ApInfoProjection a = apDao.getLatLngByBName(m1.getLocation().substring(0, m1.getLocation().indexOf(" "))); //获取位置所在建筑物的地理坐标
+                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocation(), dateFormat.format(m1.getRecordTime()), a.getLat(), a.getLng()));
+                } else {
+                    ApInfoProjection a1 = apDao.getLatLngByBName(m1.getLocationFrom().substring(0, m1.getLocationFrom().indexOf(" ")));
+                    ApInfoProjection a2 = apDao.getLatLngByBName(m1.getLocationTo().substring(0, m1.getLocationTo().indexOf(" ")));
+                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationFrom(), dateFormat.format(m1.getRecordTime()), a1.getLat(), a1.getLng()));
+                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationTo(), dateFormat.format(m1.getRecordTime()), a2.getLat(), a2.getLng()));
+                }
+            }
+        }
+
+        ResultBean resultBean = new ResultBean();
+        resultBean.setDataList(pathInfoList);
+        resultBean.setMessage("查询成功");
+        resultBean.setSuccess(true);
+
+        return resultBean;
+    }
+
+
+    private List<PathInfo1> trackSinglePeopleByPeriodUtil(TrackFromMessage message) throws ParseException {
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startTime = sdf1.parse(message.getStartTime());
+        Date endTime = sdf1.parse(message.getEndTime());
+
+        List<MoveInfo> moveInfoList = moveInfoDao.getByPeopleIdAndRecordTimeBetween(message.getId(), startTime, endTime);
+        List<PathInfo1> pathInfoList = new LinkedList<>();
+        for (int i = 1; i < moveInfoList.size(); i++) {
+            MoveInfo m1 = moveInfoList.get(i - 1);
+            MoveInfo m2 = moveInfoList.get(i);
+
+            Date time1 = m1.getRecordTime();
+            Date time2 = m2.getRecordTime();
+
             long diff = time2.getTime() - time1.getTime();
             long diffMinutes = diff / (60 * 1000) % 60;
             //如果前后两条记录时间小于5分钟则认为是路过 不计算入行为轨迹
             if (diffMinutes >= 5) {
                 String locationFrom = m1.getLocation() != null ? m1.getLocation() : m1.getLocationTo();
                 String locationTo = m2.getLocation() != null ? m2.getLocation() : m2.getLocationTo();
-                pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), locationFrom, locationTo, m1.getRecordTime(), m2.getRecordTime()));
+                pathInfoList.add(new PathInfo1(m1.getPeopleId(), m1.getName(), m1.getDepartment(), locationFrom, locationTo, m1.getRecordTime(), m2.getRecordTime()));
             }
         }
 
@@ -97,8 +128,8 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
         startTime1.setTime(length - subtractLength);
         message.setStartTime(format.format(startTime1));
 
-        List<PathInfo> pathInfoList = trackSinglePeopleUtil(message);
-        for (PathInfo singlePoint : pathInfoList) {
+        List<PathInfo1> pathInfoList = trackSinglePeopleByPeriodUtil(message);
+        for (PathInfo1 singlePoint : pathInfoList) {
 
             String locationFrom = singlePoint.getLocationFrom();
             String locationTo = singlePoint.getLocationFrom();

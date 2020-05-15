@@ -39,6 +39,8 @@ class GoApplicationTests {
 
     @Test
     void contextLoads() {
+        String str = "教二楼 2层220";
+        System.out.println(str.substring(0, str.indexOf(" ")));
     }
 
     @Test
@@ -78,6 +80,7 @@ class GoApplicationTests {
         GPSUtil.bd_decryptNum(c);
         System.out.println("高德： lat=" + c.getLat() + " lng=" + c.getLng());
     }
+
 
 }
 

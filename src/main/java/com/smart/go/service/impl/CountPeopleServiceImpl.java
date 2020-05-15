@@ -31,7 +31,6 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     @Resource
     private ApDao apDao;
 
-
     @Override
     // description 查询目标时间段内在该地点有操作的所有用户
     public ResultBean countInPeriod(CountMessage message) throws ParseException {

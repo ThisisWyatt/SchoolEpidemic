@@ -4,7 +4,7 @@ package com.smart.go.content;
 import java.util.Date;
 
 /**
- * Description 记录被追踪者轨迹信息
+ * Description 记录被追踪者轨迹信息 （ 按照时间点 ）
  * Author cloudr
  * Date 2020/5/6 13:26
  * Version 1.0
@@ -13,60 +13,28 @@ public class PathInfo {
     private String peopleId;
     private String peopleName;
     private String department;
-    private String locationFrom;
-    private String locationTo;
-    private Date startTime;
-    private Date endTime;
+    private String location;
+    private String lat;
+    private String lng;
+    private String time;
 
     public PathInfo() {
     }
 
-    public PathInfo(String peopleId, String peopleName, String department, String locationFrom, String locationTo, Date startTime, Date endTime) {
-        this.locationFrom = locationFrom;
-        this.locationTo = locationTo;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public PathInfo(String peopleId, String peopleName, String department, String location, String time, String lat, String lng) {
         this.peopleId = peopleId;
         this.peopleName = peopleName;
         this.department = department;
+        this.location = location;
+        this.time = time;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public PathInfo(String peopleId, String peopleName, String department) {
         this.peopleId = peopleId;
         this.peopleName = peopleName;
         this.department = department;
-    }
-
-    public String getLocationFrom() {
-        return locationFrom;
-    }
-
-    public void setLocationFrom(String locationFrom) {
-        this.locationFrom = locationFrom;
-    }
-
-    public String getLocationTo() {
-        return locationTo;
-    }
-
-    public void setLocationTo(String locationTo) {
-        this.locationTo = locationTo;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     public String getPeopleId() {
@@ -93,13 +61,35 @@ public class PathInfo {
         this.department = department;
     }
 
-    @Override
-    public String toString() {
-        return "PathInfo{" +
-                "locationFrom='" + locationFrom + '\'' +
-                ", locationTo='" + locationTo + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }
