@@ -30,7 +30,6 @@ public class MoveInfo implements Serializable {
     private String locationFrom;
     @Column(name = "location_to")   //AP切换或漫游的终点
     private String locationTo;
-
     @Column(name = "ap_type")       //AP变换类型
     private String apType;
 
@@ -47,6 +46,7 @@ public class MoveInfo implements Serializable {
         this.locationTo = locationTo;
         this.recordTime = recordTime;
         this.apType = apType;
+
     }
 
 

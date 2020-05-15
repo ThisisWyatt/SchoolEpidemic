@@ -1,8 +1,10 @@
 package com.smart.go.service.impl;
 
+import com.smart.go.content.ApInfoProjection;
 import com.smart.go.content.CountMessage;
 import com.smart.go.content.PathInfo;
 import com.smart.go.content.PathInfoProjection;
+import com.smart.go.dao.ApDao;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.TrackPeopleService;
@@ -33,6 +35,8 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
     private CountPeopleServiceImpl countPeopleService;
     @Resource
     private MoveInfoServiceImpl moveInfoService;
+    @Resource
+    private ApDao apDao;
 
     @Override
     // description 根据人员Id查询在某个时间段的ap连接信息
@@ -76,6 +80,7 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
         return pathInfoList;
     }
 
+
     @Override
     // description 根据人员Id查询在某个时间段接触过的人员Id
     public ResultBean trackRelatedPeople(TrackFromMessage message) throws ParseException {
@@ -99,12 +104,13 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             String locationTo = singlePoint.getLocationFrom();
             Date startTime = singlePoint.getStartTime();
             Date endTime = singlePoint.getEndTime();
-
+            ApInfoProjection a1 = apDao.getLatLngByBName(locationFrom);
             CountMessage message1 = new CountMessage(startTime.toString(), endTime.toString(), locationFrom);
             List<String> relateList1 = countPeopleService.countInPeriodUtil(message1);
 
             List<String> relateList2 = new LinkedList<>(); //如果LocationFrom和LocationTo不是同一个地点则再查询一次
             if (!singlePoint.getLocationFrom().equals(singlePoint.getLocationTo())) {
+                ApInfoProjection a2 = apDao.getLatLngByBName(locationTo);
                 CountMessage message2 = new CountMessage(startTime.toString(), endTime.toString(), locationTo);
                 relateList2 = countPeopleService.countInPeriodUtil(message2);
             }

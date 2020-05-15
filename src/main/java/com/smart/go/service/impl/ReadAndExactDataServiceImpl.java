@@ -33,7 +33,7 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
     private Logger logger = LogManager.getLogger(this.getClass());
 
     public void TestReadLog() throws IOException, ParseException {
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("messages-20200419");
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("messages-20200426");
         assert stream != null;
         BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
         while (br.readLine() != null) {

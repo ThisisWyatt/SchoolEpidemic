@@ -18,6 +18,7 @@ public class CountMessage {
         this.startTime = startTime;
         this.endTime = endTime;
         this.location = location;
+
     }
 
     public String getStartTime() {
@@ -43,4 +44,6 @@ public class CountMessage {
     public void setLocation(String location) {
         this.location = location;
     }
+
+
 }

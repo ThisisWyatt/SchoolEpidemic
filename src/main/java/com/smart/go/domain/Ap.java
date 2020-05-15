@@ -13,14 +13,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ap_info")
 public class Ap {
-
+    @Id
+    @Column(name = "MAC_ADDRESS", length = 190)   //MAC地址
+    private String macAddress;
     @Column(name = "AP_NAME")       //AP名字
     private String apName;
     @Column(name = "IP_ADDRESS")    //IP地址
     private String ipAddress;
-    @Id
-    @Column(name = "MAC_ADDRESS", length = 190)   //MAC地址
-    private String macAddress;
     @Column(name = "CAMPUS")        // 校区
     private String campus;
     @Column(name = "BUILDING_NAME") //楼宇名称
@@ -29,6 +28,10 @@ public class Ap {
     private String floorId;
     @Column(name = "ROOM_ID")       //房间号
     private String roomId;
+    @Column(name = "LAT")           //维度
+    private String lat;
+    @Column(name = "LNG")           //经度
+    private String lng;
 
 
     public String getApName() {
@@ -85,5 +88,21 @@ public class Ap {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

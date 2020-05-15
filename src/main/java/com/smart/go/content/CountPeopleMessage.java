@@ -6,16 +6,20 @@ package com.smart.go.content;
  * Date 2020/5/7 22:16
  * Version 1.0
  **/
-public class CountPeople {
+public class CountPeopleMessage {
     private String location;
     private int num;
+    private String lat;
+    private String lng;
 
-    public CountPeople() {
+    public CountPeopleMessage() {
     }
 
-    public CountPeople(String location, int num) {
+    public CountPeopleMessage(String location, int num, String lat, String lng) {
         this.location = location;
         this.num = num;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public String getLocation() {
@@ -32,6 +36,22 @@ public class CountPeople {
 
     public void setNum(int num) {
         this.num = num;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     @Override

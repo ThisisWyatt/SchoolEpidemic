@@ -1,10 +1,12 @@
 package com.smart.go.service.impl;
 
+import com.smart.go.content.ApInfoProjection;
 import com.smart.go.content.CountMessage;
-import com.smart.go.content.CountPeople;
+import com.smart.go.content.CountPeopleMessage;
 import com.smart.go.dao.ApDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.CountPeopleService;
+import com.smart.go.util.GPSUtil;
 import com.smart.go.util.ResultBean;
 import org.springframework.stereotype.Service;
 
@@ -119,14 +121,18 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     public ResultBean countInPeriodInAllBuildings(CountMessage message) throws ParseException {
 
         List<String> buildingList = apDao.getBuildingList();
-        List<CountPeople> countPeopleList = new LinkedList<>();
+        List<CountPeopleMessage> countPeopleList = new LinkedList<>();
 
         // 对每一栋建筑查询相应时段的人数
         for (String building : buildingList) {
             //构造查询条件
+            ApInfoProjection apInfo = apDao.getLatLngByBName(building);
             CountMessage m = new CountMessage(message.getStartTime(), message.getEndTime(), building);
-            int num = countInPeriod(m).getDataList().size();
-            countPeopleList.add(new CountPeople(building, num));
+            int num = countInPeriod(m).getDataList().size(); //建筑内接入人数
+            ApInfoProjection a = apDao.getLatLngByBName(building);
+            CountPeopleMessage c = new CountPeopleMessage(building, num, a.getLat(), a.getLng());
+            GPSUtil.bd_decryptNum(c);
+            countPeopleList.add(c);
         }
 
         ResultBean resultBean = new ResultBean();

@@ -1,11 +1,15 @@
 package com.smart.go;
 
-import com.smart.go.content.PathInfoProjection;
+import com.smart.go.content.ApInfoProjection;
+import com.smart.go.content.CountMessage;
+import com.smart.go.content.CountPeopleMessage;
+import com.smart.go.dao.ApDao;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.service.impl.BuildMoveInfoImpl;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.ReadAndExactDataServiceImpl;
 import com.smart.go.service.impl.TrackPeopleServiceImpl;
+import com.smart.go.util.GPSUtil;
 import com.smart.go.util.ResultBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,10 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 @SpringBootTest
 class GoApplicationTests {
@@ -35,76 +37,47 @@ class GoApplicationTests {
     @Resource
     private ResultBean resultBean;
 
-//    @Test
-//    void contextLoads() {
-//    }
-
-//    @Test
-//    void TestCountPoint() throws ParseException {
-//
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date time1 = simpleDateFormat.parse("2020-04-13 08:44:26");
-//        Date time2 = simpleDateFormat.parse("2020-04-13 11:44:26");
-//
-//        List<String> moveInfoList = countPeopleService.countInPeriod("2020-04-13 08:44:26", "2020-04-13 11:44:26", "教二楼");
-//
-//        for (String m : moveInfoList) {
-//            System.out.println(m);
-//        }
-//    }
-
-
-//    @Test
-//    void TestSPoint() throws ParseException {
-//        List<String> l = countPeopleService.countAtPoint("2020-04-13 12:44:26", "教二楼");
-//        System.out.println(l.size());
-//        for (String s : l)
-//            System.out.println(s);
-//    }
-
-//    @Test
-//    void TestReadExtract() throws IOException, ParseException {
-//        readAndExactDataService.TestReadLog();
-//    }
-
-//    @Test
-//    void TestTrack() throws ParseException {
-//
-//        trackPeopleService.trackSinglePeople("204545", "2020-4-12", "2020-4-15");
-//
-//    }
-
-//    @Test
-//    void TestBuildMoveInfo() {
-//        long currentTime = System.currentTimeMillis();
-//        buildMoveInfo.buildMoveInfo();
-//        logger.info("All  cost: " + (System.currentTimeMillis() - currentTime) + " ms");
-//    }
-
     @Test
-    void testProjection() {
-        PathInfoProjection p = moveInfoDao.getOneById("105010");
-        System.out.println(p.getPeopleId());
-        System.out.println(p.getPeopleName());
-        System.out.println(p.getDepartment());
+    void contextLoads() {
     }
 
     @Test
-    void DateTest() throws ParseException {
-
-        String endTimeStr = "2020-04-16 15:00:00";
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        Date endTime = format.parse(endTimeStr);
-
-        long length = endTime.getTime();
-        long addLength = 14 * 24 * 60 * 60 * 1000;
-        Date date2 = new Date();
-        date2.setTime(length - addLength);
-        System.out.println(format.format(date2));
-
+    void GetDataFromLogTest() throws IOException, ParseException {
+        readAndExactDataService.TestReadLog();
 
     }
 
+    @Test
+    void BuildMoveInfoTest() {
+        buildMoveInfo.buildMoveInfo();
+    }
+
+    @Resource
+    private ApDao apDao;
+
+    @Test
+    void getLatLngTest() {
+        ApInfoProjection a = apDao.getLatLngByBName("图书馆会议室");
+        System.out.println(a.getLat());
+        System.out.println(a.getLng());
+    }
+
+    @Test
+    void GPSUtilTest() throws ParseException {
+        CountMessage message = new CountMessage();
+        message.setStartTime("2020-04-22 9:00:00");
+        message.setEndTime("2020-04-22 15:00:00");
+        String building = "晶体楼";
+        ApInfoProjection apInfo = apDao.getLatLngByBName(building);
+        CountMessage m = new CountMessage(message.getStartTime(), message.getEndTime(), building);
+        int num = countPeopleService.countInPeriod(m).getDataList().size(); //建筑内接入人数
+        ApInfoProjection a = apDao.getLatLngByBName(building);
+        System.out.println(building);
+        CountPeopleMessage c = new CountPeopleMessage(building, num, a.getLat(), a.getLng());
+        System.out.println("百度： lat=" + a.getLat() + " lng=" + a.getLng());
+        GPSUtil.bd_decryptNum(c);
+        System.out.println("高德： lat=" + c.getLat() + " lng=" + c.getLng());
+    }
 
 }
 

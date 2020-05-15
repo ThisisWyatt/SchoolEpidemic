@@ -6,8 +6,8 @@
             <PatternLayout pattern="[%d{HH:mm:ss:SS}] [%p] - %l - %m%n"/>
         </Console>
 
-        <!--        <RollingFile name="RollingFileInfo" fileName="C:/Users/life/Desktop/goInfo.log"-->
-        <RollingFile name="RollingFileInfo" fileName="/root/test/goInfo.log"
+        <!--        <RollingFile name="RollingFileInfo" fileName="/root/test/goInfo.log"-->
+        <RollingFile name="RollingFileInfo" fileName="C:/Users/life/Desktop/goInfo.log"
 
                      filePattern="Y:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log}">
             <Filters>
@@ -22,9 +22,9 @@
 
     </appenders>
     <loggers>
-        <root level="INFO">
+        <root level="WARN">
             <appender-ref ref="Console"/>
-            <!--            <appender-ref ref="RollingFileInfo"/>-->
+            <!--                        <appender-ref ref="RollingFileInfo"/>-->
         </root>
     </loggers>
 </configuration>
