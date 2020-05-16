@@ -1,7 +1,5 @@
 package com.smart.go.content;
 
-import java.security.PrivateKey;
-
 /**
  * Description
  * Author cloudr

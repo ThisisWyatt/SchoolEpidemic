@@ -3,7 +3,6 @@ package com.smart.go.service.impl;
 import com.smart.go.dao.*;
 import com.smart.go.domain.*;
 import com.smart.go.service.BuildMoveInfo;
-import com.smart.go.service.MoveInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -97,7 +96,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                 apUserIdLength = apUserId.length();
             }
 
-            if (apUserIdLength == 10) {
+            if (apUserIdLength > 7) { //学生
                 Optional<Student> studentOptional = studentDao.findById(apUserId);
                 Student student = new Student();
                 if (studentOptional.isPresent()) {
@@ -162,7 +161,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                 MoveInfo moveInfo = new MoveInfo(studentId, studentName, className, location, locationFrom, locationTo, recordTime, type, campus);
                 moveInfos.add(moveInfo);
                 moveInfoDao.save(moveInfo);
-            } else {
+            } else { //教职工
                 Optional<Teacher> teacherOptional = teacherDao.findById(apUserId);
                 Teacher teacher = new Teacher();
                 if (teacherOptional.isPresent()) {

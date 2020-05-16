@@ -1,8 +1,6 @@
 package com.smart.go.content;
 
 
-import java.util.Date;
-
 /**
  * Description 记录被追踪者轨迹信息 （ 按照时间点 ）
  * Author cloudr

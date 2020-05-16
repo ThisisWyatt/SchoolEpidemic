@@ -3,8 +3,12 @@ package com.smart.go;
 import com.smart.go.content.ApInfoProjection;
 import com.smart.go.content.CountMessage;
 import com.smart.go.content.CountPeopleMessage;
+import com.smart.go.content.StudentProjection;
 import com.smart.go.dao.ApDao;
 import com.smart.go.dao.MoveInfoDao;
+import com.smart.go.dao.StudentDao;
+import com.smart.go.dao.TeacherDao;
+import com.smart.go.domain.Teacher;
 import com.smart.go.service.impl.BuildMoveInfoImpl;
 import com.smart.go.service.impl.CountPeopleServiceImpl;
 import com.smart.go.service.impl.ReadAndExactDataServiceImpl;
@@ -19,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Optional;
 
 @SpringBootTest
 class GoApplicationTests {
@@ -36,6 +41,12 @@ class GoApplicationTests {
     private TrackPeopleServiceImpl trackPeopleService;
     @Resource
     private ResultBean resultBean;
+    @Resource
+    private ApDao apDao;
+    @Resource
+    private StudentDao studentDao;
+    @Resource
+    private TeacherDao teacherDao;
 
     @Test
     void contextLoads() {
@@ -53,9 +64,6 @@ class GoApplicationTests {
     void BuildMoveInfoTest() throws ParseException {
         buildMoveInfo.buildMoveInfo();
     }
-
-    @Resource
-    private ApDao apDao;
 
     @Test
     void getLatLngTest() {
@@ -79,6 +87,18 @@ class GoApplicationTests {
         System.out.println("百度： lat=" + a.getLat() + " lng=" + a.getLng());
         GPSUtil.bd_decryptNum(c);
         System.out.println("高德： lat=" + c.getLat() + " lng=" + c.getLng());
+    }
+
+    @Test
+    void getUserInfoTest() {
+        Optional<StudentProjection> studentOptional = studentDao.findThroughId("3170931036");
+        studentOptional.ifPresent(StudentProjection -> System.out.println(StudentProjection.getName()));
+        Optional<Teacher> teacherOptional = teacherDao.findByEmployeeId("1050100");
+//        teacherProjection.isPresent(teacherProjection -> System.out.println(teacherProjection.getName()));
+        Teacher teacher1 = new Teacher();
+        if (teacherOptional.isPresent())
+            teacher1 = teacherOptional.get();
+        System.out.println(teacher1.getName());
     }
 
 
