@@ -81,6 +81,10 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             }
         }
 
+        LinkedHashSet<PathInfo> pathInfoListH = new LinkedHashSet<>(pathInfoList);
+        pathInfoList = new LinkedList<>(pathInfoListH);
+        List<PathInfoProjection> relatePeopleListInfo = new LinkedList<>();
+
         ResultBean resultBean = new ResultBean();
         resultBean.setDataList(pathInfoList);
         resultBean.setMessage("查询成功");
