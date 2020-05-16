@@ -5,11 +5,13 @@ import com.smart.go.dao.ApDao;
 import com.smart.go.dao.MoveInfoDao;
 import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.TrackPeopleService;
+import com.smart.go.util.GPSUtil;
 import com.smart.go.util.ResultBean;
 import com.smart.go.util.TrackFromMessage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.Path;
 import javax.validation.constraints.Null;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,12 +64,19 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             if (diffMinutes >= 5) {
                 if (m1.getLocation() != null) {
                     ApInfoProjection a = apDao.getLatLngByBName(m1.getLocation().substring(0, m1.getLocation().indexOf(" "))); //获取位置所在建筑物的地理坐标
-                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocation(), dateFormat.format(m1.getRecordTime()), a.getLat(), a.getLng(), m1.getCampus()));
+                    PathInfo p = new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocation(), dateFormat.format(m1.getRecordTime()), a.getLat(), a.getLng(), m1.getCampus());
+                    GPSUtil.forPathInfo(p); //坐标转换
+                    pathInfoList.add(p);
+
                 } else {
                     ApInfoProjection a1 = apDao.getLatLngByBName(m1.getLocationFrom().substring(0, m1.getLocationFrom().indexOf(" ")));
                     ApInfoProjection a2 = apDao.getLatLngByBName(m1.getLocationTo().substring(0, m1.getLocationTo().indexOf(" ")));
-                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationFrom(), dateFormat.format(m1.getRecordTime()), a1.getLat(), a1.getLng(), m1.getCampus()));
-                    pathInfoList.add(new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationTo(), dateFormat.format(m1.getRecordTime()), a2.getLat(), a2.getLng(), m1.getCampus()));
+                    PathInfo p1 = new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationFrom(), dateFormat.format(m1.getRecordTime()), a1.getLat(), a1.getLng(), m1.getCampus());
+                    PathInfo p2 = new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationTo(), dateFormat.format(m1.getRecordTime()), a2.getLat(), a2.getLng(), m1.getCampus());
+                    GPSUtil.forPathInfo(p1);//坐标转换
+                    GPSUtil.forPathInfo(p2);
+                    pathInfoList.add(p1);
+                    pathInfoList.add(p1);
                 }
             }
         }
