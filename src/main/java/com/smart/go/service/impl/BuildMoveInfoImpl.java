@@ -45,7 +45,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
 
 //        List<SingleLog> singleLogList = singleLogDao.findAll();
         SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
-        Date date = format.parse("2020-04-26");
+        Date date = format.parse("2020-05-03");
         List<SingleLog> singleLogList = singleLogDao.findAllAfter(date);
         List<MoveInfo> moveInfos = new LinkedList<>();
         System.out.println(singleLogList.size());

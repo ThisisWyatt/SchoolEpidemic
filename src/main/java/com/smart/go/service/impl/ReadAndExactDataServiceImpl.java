@@ -6,13 +6,12 @@ import com.smart.go.service.SingleLogService;
 import com.smart.go.util.ExtractData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 
@@ -23,6 +22,7 @@ import java.text.ParseException;
  * Version 1.0
  **/
 @Service
+@EnableScheduling
 public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
 
     @Resource
@@ -30,13 +30,13 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
     @Resource
     private SingleLogService singleLogService;
 
-    private Logger logger = LogManager.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
+    @Scheduled(cron = "0 0 2 19 * ?")
     public void TestReadLog() {
         try {
-            InputStream stream = getClass().getClassLoader().getResourceAsStream("messages-20200503");
-            assert stream != null;
-            BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:/Users/life/Desktop/messages-20200510")),
+                    StandardCharsets.UTF_8));
             while (br.readLine() != null) {
                 String messages = br.readLine();
                 if (messages != null) {
