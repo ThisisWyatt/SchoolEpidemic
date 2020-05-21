@@ -25,6 +25,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -89,6 +90,23 @@ class GoApplicationTests {
             System.out.println("时间解析错误");
         }
         System.out.println(singleLog);
+    }
+
+    @Test
+    void getLayers() {
+        List<String> layers = apDao.getLayers("教二楼");
+        for (String layer : layers)
+            System.out.println(layer);
+        List<String> rooms = apDao.getRooms("水利实验室", "1");
+        for (String room : rooms)
+            System.out.println(room);
+    }
+
+    @Test
+    void layersTest() throws ParseException {
+        CountMessage m = new CountMessage("2020-04-29 9:00:00", "2020-04-29 15:00:00", "教二楼");
+        int num = countPeopleService.countInPeriod(m).getDataList().size();
+        System.out.println(num);
     }
 
 }

@@ -18,4 +18,9 @@ public interface CountPeopleService {
     // description  查询目标时间段所有建筑中Ap接入人数
     ResultBean countInPeriodInAllBuildings(CountMessage message) throws ParseException;
 
+    // description 查询一个建筑内所有楼层的人数
+    ResultBean queryInPeriodInABuilding(CountMessage message) throws ParseException;
+
+    // description 查询一个楼层内所有房间的人数
+    ResultBean queryInPeriodInALayer(CountMessage message) throws ParseException;
 }

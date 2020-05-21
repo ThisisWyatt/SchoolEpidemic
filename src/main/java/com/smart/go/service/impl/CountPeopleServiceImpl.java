@@ -142,5 +142,54 @@ public class CountPeopleServiceImpl implements CountPeopleService {
         return resultBean;
     }
 
+    @Override
+    // description 查询一个建筑内所有楼层的人数
+    public ResultBean queryInPeriodInABuilding(CountMessage message) throws ParseException {
+
+        List<CountPeopleMessage> countPeopleList = new LinkedList<>();
+
+        List<String> layers = apDao.getLayers(message.getLocation());
+        for (String layer : layers) {
+            String location = message.getLocation() + " " + layer;
+            CountMessage m = new CountMessage(message.getStartTime(), message.getEndTime(), location);
+            int num = countInPeriod(m).getDataList().size(); //楼层内接入人数
+            CountPeopleMessage c = new CountPeopleMessage(location, num);
+            countPeopleList.add(c);
+        }
+
+        ResultBean resultBean = new ResultBean();
+        resultBean.setDataList(countPeopleList);
+        resultBean.setSuccess(true);
+        resultBean.setMessage("查询成功");
+
+        return resultBean;
+
+    }
+
+    @Override
+    // description 查询一个楼层内所有房间的人数
+    public ResultBean queryInPeriodInALayer(CountMessage message) throws ParseException {
+
+        List<CountPeopleMessage> countPeopleList = new LinkedList<>();
+
+        String[] location0 = message.getLocation().split(" ");
+        List<String> rooms = apDao.getRooms(location0[0], location0[1]);
+
+        for (String room : rooms) {
+            String location = message.getLocation() + " " + room;
+            CountMessage m = new CountMessage(message.getStartTime(), message.getEndTime(), location);
+            int num = countInPeriod(m).getDataList().size(); //房间内接入人数
+            CountPeopleMessage c = new CountPeopleMessage(location, num);
+            countPeopleList.add(c);
+        }
+
+        ResultBean resultBean = new ResultBean();
+        resultBean.setDataList(countPeopleList);
+        resultBean.setSuccess(true);
+        resultBean.setMessage("查询成功");
+
+        return resultBean;
+    }
+
 
 }

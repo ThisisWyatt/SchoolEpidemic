@@ -25,12 +25,11 @@ import java.text.ParseException;
 @EnableScheduling
 public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
 
+    private final Logger logger = LogManager.getLogger(this.getClass());
     @Resource
     private ExtractData extractData;
     @Resource
     private SingleLogService singleLogService;
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Scheduled(cron = "0 0 2 19 * ?")
     public void TestReadLog() {

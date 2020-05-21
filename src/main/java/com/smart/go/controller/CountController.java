@@ -55,6 +55,29 @@ public class CountController {
     }
 
     @ResponseBody
+    // description 查询一个建筑内所有楼层的人数
+    @RequestMapping("/queryInPeriodInABuilding")
+    public ResultBean queryInPeriodInABuilding(@RequestBody String params) throws ParseException {
+        CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
+        });
+
+        return countPeopleService.queryInPeriodInABuilding(message);
+    }
+
+    @ResponseBody
+    @RequestMapping("/queryInPeriodInALayer")
+    public ResultBean queryInPeriodInALayer(@RequestBody String params) throws ParseException {
+        CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
+        });
+
+        System.out.println(message.getLocation());
+        System.out.println(message.getStartTime());
+        System.out.println(message.getEndTime());
+        return countPeopleService.queryInPeriodInALayer(message);
+    }
+
+
+    @ResponseBody
     @RequestMapping("/queryInPeriod")
     // description 查询目标时间段内在该地点有操作的所有用户
     public ResultBean queryInPeriod(@RequestBody String params) throws ParseException {

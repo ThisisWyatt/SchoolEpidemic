@@ -15,6 +15,11 @@ public class CountPeopleMessage {
     public CountPeopleMessage() {
     }
 
+    public CountPeopleMessage(String location, int num) {
+        this.location = location;
+        this.num = num;
+    }
+
     public CountPeopleMessage(String location, int num, String lat, String lng) {
         this.location = location;
         this.num = num;
