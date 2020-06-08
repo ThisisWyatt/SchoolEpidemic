@@ -14,6 +14,6 @@ import java.util.List;
  **/
 public interface SingleLogDao extends JpaRepository<SingleLog, Date> {
 
-    @Query(value = "select *  from go.aclog_result where record_time >=  ?1", nativeQuery = true)
+    @Query(value = "select *  from SchoolEpidemic.aclog_result where record_time >=  ?1", nativeQuery = true)
     List<SingleLog> findAllAfter(Date date);
 }

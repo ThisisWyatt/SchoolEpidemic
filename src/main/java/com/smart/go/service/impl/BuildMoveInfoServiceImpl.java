@@ -2,20 +2,18 @@ package com.smart.go.service.impl;
 
 import com.smart.go.dao.*;
 import com.smart.go.domain.*;
-import com.smart.go.service.BuildMoveInfo;
+import com.smart.go.service.BuildMoveInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +24,7 @@ import java.util.Optional;
  * Version 1.0
  **/
 @Service
-public class BuildMoveInfoImpl implements BuildMoveInfo {
+public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -46,14 +44,14 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
 
     @Override
     public void buildMoveInfo() throws ParseException {
+        System.out.println("hhhhhhhhhhh");
 
-
-        int logCount= (int) singleLogDao.count(); //数据条数
-        int pages=logCount/500;   //总页数
+        int logCount = (int) singleLogDao.count(); //数据条数
+        int pages = logCount / 10000;   //总页数
 
         for (int i = 0; i < pages; i++) {
-            Pageable pageable= PageRequest.of(i,500);
-            Page<SingleLog> logs=singleLogDao.findAll(pageable);
+            Pageable pageable = PageRequest.of(i, 10000);
+            Page<SingleLog> logs = singleLogDao.findAll(pageable);
 
             for (SingleLog singleLog : logs) {
 
@@ -76,6 +74,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                 String apName = null;
                 String apNameFrom = null;
                 String apNameTO = null;
+
                 if (singleLog.getApName() != null) {
                     apName = singleLog.getApName();
                 } else {
@@ -84,12 +83,12 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                 }
 
                 String userMac = singleLog.getUserMac();
-                logger.info("userMac=" + userMac);
+                //TODO 更改查询方式
                 List<ApUser> apUserList = apUserDao.findByMacAddress(userMac);
                 ApUser apUser = new ApUser();
                 if (apUserList.size() == 1) {
                     apUser = apUserList.get(0);
-                } else {
+                } else { //一个mac地址对应对个userId 说明这是一台公共设备 被多人使用
                     logger.info("apUser为空或为公共主机 退出");
                     continue;
                 }
@@ -106,9 +105,10 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     if (studentOptional.isPresent()) {
                         student = studentOptional.get();
                     } else {
-                        logger.info("student 为空 退出");
+                        logger.info("student 为空 退出" + apUserId);
                         continue;
                     }
+
                     studentId = student.getStudentNo();
                     studentName = student.getName();
                     className = student.getClassName();
@@ -130,7 +130,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                         Ap apFrom = apDao.findByApName(apNameFrom);
                         Ap apTo = apDao.findByApName(apNameTO);
                         if (apFrom == null || apTo == null) {
-                            logger.info("apFrom或者apTO为null");
+                            logger.info("apFrom或者apTO为null" + apNameFrom + "  " + apNameTO);
                             continue;
                         }
                         String buildingAddressFrom = apFrom.getBuildingName();
@@ -170,7 +170,7 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
                     if (teacherOptional.isPresent()) {
                         teacher = teacherOptional.get();
                     } else {
-                        logger.info("teacher 未找到 退出");
+                        logger.info("teacher 未找到 退出" + apUserId);
                         continue;
                     }
                     teacherId = teacher.getEmployeeId();
@@ -230,10 +230,6 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
 
 
         }
-
-
-
-
 
 
     }

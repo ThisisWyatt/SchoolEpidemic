@@ -14,7 +14,7 @@ import java.util.Optional;
  **/
 public interface StudentDao extends JpaRepository<Student, String> {
 
-    @Query(value = "select student_no as studentNo,name as name ,class_name as className from go.student_info where student_no=?1", nativeQuery = true)
+    @Query(value = "select student_no as studentNo,name as name ,class_name as className from SchoolEpidemic.student_info where student_no=?1", nativeQuery = true)
     Optional<StudentProjection> findThroughId(String id);
 
 }

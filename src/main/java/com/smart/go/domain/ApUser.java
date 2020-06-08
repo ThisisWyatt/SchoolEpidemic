@@ -19,10 +19,7 @@ public class ApUser implements Serializable {
     @Id
     @Column(name = "USER_ID", length = 190)       // 用户ID
     private String userId;
-    @Column(name = "USER_NAME")     //用户姓名
-    private String userName;
-    @Column(name = "IPV4_ADDRESS")  //用户ipv4地址
-    private String ipv4Address;
+
 
     public String getUserId() {
         return userId;
@@ -32,21 +29,6 @@ public class ApUser implements Serializable {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getIpv4Address() {
-        return ipv4Address;
-    }
-
-    public void setIpv4Address(String ipv4Address) {
-        this.ipv4Address = ipv4Address;
-    }
 
     public String getMacAddress() {
         return macAddress;

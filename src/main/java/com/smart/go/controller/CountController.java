@@ -70,9 +70,6 @@ public class CountController {
         CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
         });
 
-        System.out.println(message.getLocation());
-        System.out.println(message.getStartTime());
-        System.out.println(message.getEndTime());
         return countPeopleService.queryInPeriodInALayer(message);
     }
 

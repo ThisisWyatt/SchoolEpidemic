@@ -33,16 +33,15 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
     @Resource
     private SingleLogService singleLogService;
 
-    @Scheduled(cron = "0 0 2 19 * ?")
     public void TestReadLog() {
         try {
 
-            Date date=new Date(new Date().getTime()-86400000L);
-            SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
-            String dateString=formatter.format(date);
+            Date date = new Date(new Date().getTime() - 86400000L);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String dateString = formatter.format(date);
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:/Users/life/Desktop/"+dateString+".log")),
-                    StandardCharsets.UTF_8));
+//            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:/Users/life/Desktop/"+dateString+".log")), StandardCharsets.UTF_8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("/root/SchoolEpidemic/files/logFiles/" + dateString + ".log")), StandardCharsets.UTF_8));
             while (br.readLine() != null) {
                 String messages = br.readLine();
                 if (messages != null) {

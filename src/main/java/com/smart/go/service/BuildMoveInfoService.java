@@ -10,7 +10,7 @@ import java.text.ParseException;
  * Date 2020/4/24 1:42
  **/
 @Service
-public interface BuildMoveInfo {
+public interface BuildMoveInfoService {
 
     void buildMoveInfo() throws ParseException;
 

@@ -90,4 +90,16 @@ public class SingleLog implements Serializable {
     public void setType(int type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "SingleLog{" +
+                "recordTime=" + recordTime +
+                ", userMac='" + userMac + '\'' +
+                ", apName='" + apName + '\'' +
+                ", apNameFrom='" + apNameFrom + '\'' +
+                ", apNameTo='" + apNameTo + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }
