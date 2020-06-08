@@ -14,6 +14,8 @@ import javax.annotation.Resource;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Description
@@ -34,7 +36,12 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
     @Scheduled(cron = "0 0 2 19 * ?")
     public void TestReadLog() {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:/Users/life/Desktop/messages-20200510")),
+
+            Date date=new Date(new Date().getTime()-86400000L);
+            SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+            String dateString=formatter.format(date);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:/Users/life/Desktop/"+dateString+".log")),
                     StandardCharsets.UTF_8));
             while (br.readLine() != null) {
                 String messages = br.readLine();

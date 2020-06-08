@@ -2,11 +2,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/go?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    #    url: jdbc:mysql://202.200.119.168:3306/go?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    #    url: jdbc:mysql://202.200.126.139:3306/SchoolEpidemic?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     #    username: acloggo
     password: 369cc
-  #    password: ENC(ODaVnp/kfk75IwsivrA+3qfLEqoI3AlT)
+  #    password: ENC(GM3R2SVlWDzVTXjtbcuel2eovlLKUhWF)
 
   jpa:
     hibernate:

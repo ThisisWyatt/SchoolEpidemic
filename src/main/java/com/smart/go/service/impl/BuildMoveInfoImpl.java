@@ -5,6 +5,10 @@ import com.smart.go.domain.*;
 import com.smart.go.service.BuildMoveInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,7 +28,7 @@ import java.util.Optional;
 @Service
 public class BuildMoveInfoImpl implements BuildMoveInfo {
 
-    private Logger logger = LogManager.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Resource
     private SingleLogDao singleLogDao;
@@ -43,189 +47,194 @@ public class BuildMoveInfoImpl implements BuildMoveInfo {
     @Override
     public void buildMoveInfo() throws ParseException {
 
-//        List<SingleLog> singleLogList = singleLogDao.findAll();
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
-        Date date = format.parse("2020-05-03");
-        List<SingleLog> singleLogList = singleLogDao.findAllAfter(date);
-        List<MoveInfo> moveInfos = new LinkedList<>();
-        System.out.println(singleLogList.size());
 
-        int n = 0;
-        for (SingleLog singleLog : singleLogList) {
+        int logCount= (int) singleLogDao.count(); //数据条数
+        int pages=logCount/500;   //总页数
 
-            String studentId = null;
-            String studentName = null;
-            String className = null;
+        for (int i = 0; i < pages; i++) {
+            Pageable pageable= PageRequest.of(i,500);
+            Page<SingleLog> logs=singleLogDao.findAll(pageable);
 
-            String teacherId = null;
-            String teacherName = null;
-            String department = null;
+            for (SingleLog singleLog : logs) {
 
-            String location = null;
-            String locationFrom = null;
-            String locationTo = null;
-            Date recordTime = null;
-            String type = null;
-            String campus = null;
+                String studentId = null;
+                String studentName = null;
+                String className = null;
+
+                String teacherId = null;
+                String teacherName = null;
+                String department = null;
+
+                String location = null;
+                String locationFrom = null;
+                String locationTo = null;
+                Date recordTime = null;
+                String type = null;
+                String campus = null;
 
 
-            String apName = null;
-            String apNameFrom = null;
-            String apNameTO = null;
-            if (singleLog.getApName() != null) {
-                apName = singleLog.getApName();
-            } else {
-                apNameFrom = singleLog.getApNameFrom();
-                apNameTO = singleLog.getApNameTo();
-            }
-
-            String userMac = singleLog.getUserMac();
-            logger.info("userMac=" + userMac);
-            List<ApUser> apUserList = apUserDao.findByMacAddress(userMac);
-            ApUser apUser = new ApUser();
-            if (apUserList.size() == 1) {
-                apUser = apUserList.get(0);
-            } else {
-                logger.info("apUser为空或为公共主机 退出");
-                continue;
-            }
-
-            String apUserId = apUser.getUserId();
-            int apUserIdLength = 0;
-            if (apUserId != null) {
-                apUserIdLength = apUserId.length();
-            }
-
-            if (apUserIdLength > 7) { //学生
-                Optional<Student> studentOptional = studentDao.findById(apUserId);
-                Student student = new Student();
-                if (studentOptional.isPresent()) {
-                    student = studentOptional.get();
+                String apName = null;
+                String apNameFrom = null;
+                String apNameTO = null;
+                if (singleLog.getApName() != null) {
+                    apName = singleLog.getApName();
                 } else {
-                    logger.info("student 为空 退出");
+                    apNameFrom = singleLog.getApNameFrom();
+                    apNameTO = singleLog.getApNameTo();
+                }
+
+                String userMac = singleLog.getUserMac();
+                logger.info("userMac=" + userMac);
+                List<ApUser> apUserList = apUserDao.findByMacAddress(userMac);
+                ApUser apUser = new ApUser();
+                if (apUserList.size() == 1) {
+                    apUser = apUserList.get(0);
+                } else {
+                    logger.info("apUser为空或为公共主机 退出");
                     continue;
                 }
-                studentId = student.getStudentNo();
-                studentName = student.getName();
-                className = student.getClassName();
-                if (apName != null) {
-                    Ap ap = apDao.findByApName(apName);
-                    if (ap == null) {
-                        logger.info("ap为null");
-                        continue;
-                    }
-                    String buildingAddress = ((Ap) ap).getBuildingName();
-                    String floorId = ap.getFloorId();
-                    String roomId = ap.getRoomId();
-                    campus = ap.getCampus();
-                    if (roomId == null)
-                        roomId = "";
-                    location = buildingAddress + " " + floorId + " " + roomId;
 
-                } else {
-                    Ap apFrom = apDao.findByApName(apNameFrom);
-                    Ap apTo = apDao.findByApName(apNameTO);
-                    if (apFrom == null || apTo == null) {
-                        logger.info("apFrom或者apTO为null");
-                        continue;
-                    }
-                    String buildingAddressFrom = apFrom.getBuildingName();
-                    String roomIdFrom = apFrom.getRoomId();
-                    String floorFrom = apFrom.getFloorId();
-                    campus = apFrom.getCampus();
-                    if (roomIdFrom == null)
-                        roomIdFrom = "";
-                    locationFrom = buildingAddressFrom + " " + floorFrom + " " + roomIdFrom;
-
-                    String buildingAddressTo = apTo.getBuildingName();
-                    String roomIdTo = apTo.getRoomId();
-                    if (roomIdTo == null)
-                        roomIdTo = "";
-                    String floorTO = apTo.getFloorId();
-                    locationTo = buildingAddressTo + " " + floorTO + " " + roomIdTo;
+                String apUserId = apUser.getUserId();
+                int apUserIdLength = 0;
+                if (apUserId != null) {
+                    apUserIdLength = apUserId.length();
                 }
 
-
-                recordTime = singleLog.getRecordTime();
-
-                if (singleLog.getType() == 1)
-                    type = "切换";
-                else if (singleLog.getType() == 2)
-                    type = "漫游";
-                else if (singleLog.getType() == 3)
-                    type = "增加";
-                else
-                    type = "删除";
-
-
-                MoveInfo moveInfo = new MoveInfo(studentId, studentName, className, location, locationFrom, locationTo, recordTime, type, campus);
-                moveInfos.add(moveInfo);
-                moveInfoDao.save(moveInfo);
-            } else { //教职工
-                Optional<Teacher> teacherOptional = teacherDao.findById(apUserId);
-                Teacher teacher = new Teacher();
-                if (teacherOptional.isPresent()) {
-                    teacher = teacherOptional.get();
-                } else {
-                    logger.info("teacher 未找到 退出");
-                    continue;
-                }
-                teacherId = teacher.getEmployeeId();
-                teacherName = teacher.getName();
-                department = teacher.getDepartment();
-
-                if (apName != null) {
-                    Ap ap = apDao.findByApName(apName);
-                    if (ap == null) {
-                        logger.info("ap为null");
+                if (apUserIdLength > 7) { //学生
+                    Optional<Student> studentOptional = studentDao.findById(apUserId);
+                    Student student = new Student();
+                    if (studentOptional.isPresent()) {
+                        student = studentOptional.get();
+                    } else {
+                        logger.info("student 为空 退出");
                         continue;
                     }
-                    String buildingAddress = ap.getBuildingName();
-                    String floorId = ap.getFloorId();
-                    String roomId = ap.getRoomId();
-                    campus = ap.getCampus();
-                    if (roomId == null)
-                        roomId = "";
-                    location = buildingAddress + " " + floorId + " " + roomId;
+                    studentId = student.getStudentNo();
+                    studentName = student.getName();
+                    className = student.getClassName();
+                    if (apName != null) {
+                        Ap ap = apDao.findByApName(apName);
+                        if (ap == null) {
+                            logger.info("ap为null");
+                            continue;
+                        }
+                        String buildingAddress = ((Ap) ap).getBuildingName();
+                        String floorId = ap.getFloorId();
+                        String roomId = ap.getRoomId();
+                        campus = ap.getCampus();
+                        if (roomId == null)
+                            roomId = "";
+                        location = buildingAddress + " " + floorId + " " + roomId;
 
-                } else {
-                    Ap apFrom = apDao.findByApName(apNameFrom);
-                    Ap apTo = apDao.findByApName(apNameTO);
-                    if (apFrom == null || apTo == null) {
-                        logger.info("apFrom或者apTO为null");
+                    } else {
+                        Ap apFrom = apDao.findByApName(apNameFrom);
+                        Ap apTo = apDao.findByApName(apNameTO);
+                        if (apFrom == null || apTo == null) {
+                            logger.info("apFrom或者apTO为null");
+                            continue;
+                        }
+                        String buildingAddressFrom = apFrom.getBuildingName();
+                        String roomIdFrom = apFrom.getRoomId();
+                        String floorFrom = apFrom.getFloorId();
+                        campus = apFrom.getCampus();
+                        if (roomIdFrom == null)
+                            roomIdFrom = "";
+                        locationFrom = buildingAddressFrom + " " + floorFrom + " " + roomIdFrom;
+
+                        String buildingAddressTo = apTo.getBuildingName();
+                        String roomIdTo = apTo.getRoomId();
+                        if (roomIdTo == null)
+                            roomIdTo = "";
+                        String floorTO = apTo.getFloorId();
+                        locationTo = buildingAddressTo + " " + floorTO + " " + roomIdTo;
+                    }
+
+
+                    recordTime = singleLog.getRecordTime();
+
+                    if (singleLog.getType() == 1)
+                        type = "切换";
+                    else if (singleLog.getType() == 2)
+                        type = "漫游";
+                    else if (singleLog.getType() == 3)
+                        type = "增加";
+                    else
+                        type = "删除";
+
+
+                    MoveInfo moveInfo = new MoveInfo(studentId, studentName, className, location, locationFrom, locationTo, recordTime, type, campus);
+                    moveInfoDao.save(moveInfo);
+                } else { //教职工
+                    Optional<Teacher> teacherOptional = teacherDao.findById(apUserId);
+                    Teacher teacher = new Teacher();
+                    if (teacherOptional.isPresent()) {
+                        teacher = teacherOptional.get();
+                    } else {
+                        logger.info("teacher 未找到 退出");
                         continue;
                     }
-                    String buildingAddressFrom = apFrom.getBuildingName();
-                    String roomIdFrom = apFrom.getRoomId();
-                    String floorFrom = apFrom.getFloorId();
-                    campus = apFrom.getCampus();
-                    if (roomIdFrom == null)
-                        roomIdFrom = "";
-                    locationFrom = buildingAddressFrom + " " + floorFrom + " " + roomIdFrom;
+                    teacherId = teacher.getEmployeeId();
+                    teacherName = teacher.getName();
+                    department = teacher.getDepartment();
 
-                    String buildingAddressTo = apTo.getBuildingName();
-                    String roomIdTo = apTo.getRoomId();
-                    String floorTO = apTo.getFloorId();
-                    if (roomIdTo == null)
-                        roomIdTo = "";
-                    locationTo = buildingAddressTo + " " + floorTO + " " + roomIdTo;
+                    if (apName != null) {
+                        Ap ap = apDao.findByApName(apName);
+                        if (ap == null) {
+                            logger.info("ap为null");
+                            continue;
+                        }
+                        String buildingAddress = ap.getBuildingName();
+                        String floorId = ap.getFloorId();
+                        String roomId = ap.getRoomId();
+                        campus = ap.getCampus();
+                        if (roomId == null)
+                            roomId = "";
+                        location = buildingAddress + " " + floorId + " " + roomId;
+
+                    } else {
+                        Ap apFrom = apDao.findByApName(apNameFrom);
+                        Ap apTo = apDao.findByApName(apNameTO);
+                        if (apFrom == null || apTo == null) {
+                            logger.info("apFrom或者apTO为null");
+                            continue;
+                        }
+                        String buildingAddressFrom = apFrom.getBuildingName();
+                        String roomIdFrom = apFrom.getRoomId();
+                        String floorFrom = apFrom.getFloorId();
+                        campus = apFrom.getCampus();
+                        if (roomIdFrom == null)
+                            roomIdFrom = "";
+                        locationFrom = buildingAddressFrom + " " + floorFrom + " " + roomIdFrom;
+
+                        String buildingAddressTo = apTo.getBuildingName();
+                        String roomIdTo = apTo.getRoomId();
+                        String floorTO = apTo.getFloorId();
+                        if (roomIdTo == null)
+                            roomIdTo = "";
+                        locationTo = buildingAddressTo + " " + floorTO + " " + roomIdTo;
+                    }
+
+                    recordTime = singleLog.getRecordTime();
+                    if (singleLog.getType() == 1)
+                        type = "切换";
+                    else if (singleLog.getType() == 2)
+                        type = "漫游";
+                    else if (singleLog.getType() == 3)
+                        type = "增加";
+                    else
+                        type = "删除";
+                    MoveInfo moveInfo = new MoveInfo(teacherId, teacherName, department, location, locationFrom, locationTo, recordTime, type, campus);
+                    moveInfoDao.save(moveInfo);
                 }
-
-                recordTime = singleLog.getRecordTime();
-                if (singleLog.getType() == 1)
-                    type = "切换";
-                else if (singleLog.getType() == 2)
-                    type = "漫游";
-                else if (singleLog.getType() == 3)
-                    type = "增加";
-                else
-                    type = "删除";
-                MoveInfo moveInfo = new MoveInfo(teacherId, teacherName, department, location, locationFrom, locationTo, recordTime, type, campus);
-                moveInfos.add(moveInfo);
-                moveInfoDao.save(moveInfo);
             }
+
+
         }
-        logger.info("moveInfo Length=" + moveInfos.size());
+
+
+
+
+
 
     }
 }
