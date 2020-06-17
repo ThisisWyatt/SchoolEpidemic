@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,17 +33,45 @@ public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
 
     @Override
     public void buildMoveInfo1() {
-        moveInfoDao.buildMoveInfo1();
-        moveInfoDao.buildMoveInfo2();
+
+        Date dateToday0 = new Date();
+        Date dateYesterday0 = new Date(new Date().getTime() - 86400000L);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+
+            String dateToday1 = formatter.format(dateToday0);
+            String dateYesterday1 = formatter.format(dateYesterday0);
+            Date dateToday = formatter.parse(dateToday1);
+            Date dateYesterday = formatter.parse(dateYesterday1);
+
+            moveInfoDao.buildMoveInfo1(dateYesterday, dateToday);    //关联Ap增加、删除的情况
+            moveInfoDao.buildMoveInfo2(dateYesterday, dateToday);    //关联Ap切换、漫游的情况
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            logger.error("格式化当前时间日期格式错误");
+        }
+
+
     }
 
     @Override
-    public void buildMoveInfo2() throws ParseException {
+    public void buildMoveInfo2() {
 
-        Date date0 = new Date(new Date().getTime() - 950400000L);
-        Date date = new Date(date0.getTime());
 
-        List<MoveInfo> moveInfoList = moveInfoDao.findAllAfter(date);
+        Date dateYesterday0 = new Date(new Date().getTime() - 86400000L);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateYesterday = new Date();
+        try {
+            String dateYesterday1 = formatter.format(dateYesterday0);
+            dateYesterday = formatter.parse(dateYesterday1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            logger.error("格式化当前时间日期格式错误");
+        }
+
+
+        List<MoveInfo> moveInfoList = moveInfoDao.findAllAfter(dateYesterday);
         logger.info("长度为 " + moveInfoList.size());
 
         for (MoveInfo moveInfo : moveInfoList) {
