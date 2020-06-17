@@ -28,6 +28,7 @@ public interface ApDao extends JpaRepository<Ap, String> {
     @Query(value = "SELECT DISTINCT(room_id) FROM SchoolEpidemic.ap_info WHERE (building_name = ?1 and floor_id=?2)  ORDER BY room_id", nativeQuery = true)
     List<String> getRooms(String buildingName, String layers);
 
+    // 根据ap名字获取它的位置和校区信息
     @Query(value = "select location as location,campus as campus from schoolepidemic.ap_info where ap_info.ap_name=?1 limit 1", nativeQuery = true)
     ApInfoProjection1 getLocationAndCampus(String apName);
 

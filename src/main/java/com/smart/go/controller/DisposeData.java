@@ -34,7 +34,7 @@ public class DisposeData {
         readAndExactDataService.TestReadLog();
     }
 
-    @Scheduled(cron = "0 25 23 * * ? ")
+    @Scheduled(cron = "0 52 0 * * ? ")
         //每天1:30开始处理日志源文件
     void BuildMoveInfo() throws ParseException {
         try {

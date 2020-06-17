@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Instr 用户mac地址和用户ID共同组成主键
  **/
 @Entity
-@Table(name = "user_info")
+@Table(name = "ap_user_info")
 @IdClass(ApUserMultiKeys.class)
 public class ApUser implements Serializable {
     @Id

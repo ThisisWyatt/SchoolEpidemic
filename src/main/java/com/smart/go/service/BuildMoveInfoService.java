@@ -12,7 +12,6 @@ import java.text.ParseException;
 @Service
 public interface BuildMoveInfoService {
 
-    void buildMoveInfo() throws ParseException;
 
     void buildMoveInfo1();
 
