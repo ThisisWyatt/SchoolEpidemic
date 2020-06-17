@@ -14,11 +14,16 @@ import java.util.Date;
 @Table(name = "move_info")
 @IdClass(MoveInfoMultiKeys.class)
 public class MoveInfo implements Serializable {
+
     @Id
-    @Column(name = "people_id", length = 190)     //学号或职工号
+    @Column(name = "order_id", length = 50)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderId;
+    @Id
+    @Column(name = "people_id", length = 50)     //学号或职工号
     private String peopleId;
     @Id
-    @Column(name = "record_time", length = 190)   //记录时间
+    @Column(name = "record_time")   //记录时间
     private Date recordTime;
     @Column(name = "name")          //姓名
     private String name;
@@ -32,8 +37,14 @@ public class MoveInfo implements Serializable {
     private String locationTo;
     @Column(name = "ap_type")       //AP变换类型
     private String apType;
-    @Column(name = "campus")
+    @Column(name = "campus")    //校区
     private String campus;
+    @Column(name = "ap_name")   //连接或断开时的Ap名字
+    private String apName;
+    @Column(name = "ap_name_from") //漫游或者切换时的起始Ap名字
+    private String apNameFrom;
+    @Column(name = "ap_name_to")    //漫游或者切换时的终止Ap名字
+    private String apNameTo;
 
 
     public MoveInfo() {
@@ -122,6 +133,38 @@ public class MoveInfo implements Serializable {
 
     public void setCampus(String campus) {
         this.campus = campus;
+    }
+
+    public String getApName() {
+        return apName;
+    }
+
+    public void setApName(String apName) {
+        this.apName = apName;
+    }
+
+    public String getApNameFrom() {
+        return apNameFrom;
+    }
+
+    public void setApNameFrom(String apNameFrom) {
+        this.apNameFrom = apNameFrom;
+    }
+
+    public String getApNameTo() {
+        return apNameTo;
+    }
+
+    public void setApNameTo(String apNameTo) {
+        this.apNameTo = apNameTo;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     @Override

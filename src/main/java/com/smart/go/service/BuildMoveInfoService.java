@@ -14,5 +14,8 @@ public interface BuildMoveInfoService {
 
     void buildMoveInfo() throws ParseException;
 
+    void buildMoveInfo1();
+
+    void buildMoveInfo2() throws ParseException;
 
 }

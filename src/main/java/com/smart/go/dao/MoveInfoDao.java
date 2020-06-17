@@ -2,9 +2,13 @@ package com.smart.go.dao;
 
 import com.smart.go.content.PathInfoProjection;
 import com.smart.go.domain.MoveInfo;
+import com.smart.go.domain.SingleLog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -37,4 +41,17 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
     //根据Id查询出基本信息
     @Query(value = "SELECT distinct people_id as peopleId,name as peopleName,department as department FROM SchoolEpidemic.move_info where people_id=?1  ;", nativeQuery = true)
     PathInfoProjection getOneById(String id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "insert into SchoolEpidemic.move_info (record_time,people_id,name,department,ap_type,ap_name) select aclog_result.record_time,student_info.student_no,student_info.name,student_info.college_name,aclog_result.type,aclog_result.ap_name from SchoolEpidemic.aclog_result,SchoolEpidemic.student_info,SchoolEpidemic.user_info where (aclog_result.record_time  BETWEEN '2020-06-08 00:00:00' and '2020-06-08 00:20:00') and (aclog_result.user_mac=user_info.MAC_ADDRESS ) and (user_info.USER_ID=student_info.student_no) and (aclog_result.ap_name is not null)", nativeQuery = true)
+    void buildMoveInfo1();
+
+    @Transactional
+    @Modifying
+    @Query(value = "insert into SchoolEpidemic.move_info (record_time,people_id,name,department,ap_type,ap_name_from,ap_name_to) select aclog_result.record_time,student_info.student_no,student_info.name,student_info.college_name,aclog_result.type,aclog_result.ap_name_from,aclog_result.ap_name_to from  SchoolEpidemic.aclog_result,SchoolEpidemic.student_info,SchoolEpidemic.user_info where (aclog_result.record_time  BETWEEN '2020-06-08 00:00:00' and '2020-06-08 00:20:00') and (aclog_result.user_mac=user_info.MAC_ADDRESS ) and (user_info.USER_ID=student_info.student_no) and (aclog_result.ap_name is  null)", nativeQuery = true)
+    void buildMoveInfo2();
+
+    @Query(value = "select *  from SchoolEpidemic.move_info where record_time >=  ?1", nativeQuery = true)
+    List<MoveInfo> findAllAfter(Date date);
 }

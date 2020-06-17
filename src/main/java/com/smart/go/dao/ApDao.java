@@ -1,6 +1,7 @@
 package com.smart.go.dao;
 
 import com.smart.go.content.ApInfoProjection;
+import com.smart.go.content.ApInfoProjection1;
 import com.smart.go.domain.Ap;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +27,8 @@ public interface ApDao extends JpaRepository<Ap, String> {
     // 根据建筑名字，楼层 查询所有房间
     @Query(value = "SELECT DISTINCT(room_id) FROM SchoolEpidemic.ap_info WHERE (building_name = ?1 and floor_id=?2)  ORDER BY room_id", nativeQuery = true)
     List<String> getRooms(String buildingName, String layers);
+
+    @Query(value = "select location as location,campus as campus from schoolepidemic.ap_info where ap_info.ap_name=?1 limit 1", nativeQuery = true)
+    ApInfoProjection1 getLocationAndCampus(String apName);
 
 }

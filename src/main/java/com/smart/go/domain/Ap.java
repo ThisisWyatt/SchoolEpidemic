@@ -32,6 +32,8 @@ public class Ap {
     private String lat;
     @Column(name = "LNG")           //经度
     private String lng;
+    @Column(name = "location")
+    private String location;
 
 
     public String getApName() {
@@ -104,5 +106,13 @@ public class Ap {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

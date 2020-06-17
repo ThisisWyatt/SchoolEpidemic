@@ -2,6 +2,7 @@ package com.smart.go.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Description MoveInfo的复合主键类
@@ -10,15 +11,17 @@ import java.util.Date;
  **/
 public class MoveInfoMultiKeys implements Serializable {
 
+    private Long orderId;
     private String peopleId;
     private Date recordTime;
 
     public MoveInfoMultiKeys() {
     }
 
-    public MoveInfoMultiKeys(String peopleId, Date recordTime) {
+    public MoveInfoMultiKeys(String peopleId, Date recordTime, Long orderId) {
         this.peopleId = peopleId;
         this.recordTime = recordTime;
+        this.orderId = orderId;
     }
 
     public String getPeopleId() {
@@ -37,20 +40,26 @@ public class MoveInfoMultiKeys implements Serializable {
         this.recordTime = recordTime;
     }
 
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MoveInfoMultiKeys that = (MoveInfoMultiKeys) o;
-        return peopleId.equals(that.peopleId) &&
-                recordTime.equals(that.recordTime);
+        return Objects.equals(orderId, that.orderId) &&
+                Objects.equals(peopleId, that.peopleId) &&
+                Objects.equals(recordTime, that.recordTime);
     }
 
     @Override
     public int hashCode() {
-        int code = 17;
-        code = code * 31 + (peopleId != null ? peopleId.hashCode() : 0);
-        code = code * 31 + (recordTime != null ? recordTime.hashCode() : 0);
-        return code;
+        return Objects.hash(orderId, peopleId, recordTime);
     }
 }

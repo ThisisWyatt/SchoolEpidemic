@@ -1,9 +1,30 @@
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://202.200.126.139:3306/SchoolEpidemic?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+#    username: acloggo
+#    password: ENC(GM3R2SVlWDzVTXjtbcuel2eovlLKUhWF)
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
+#
+#
+#logging:
+#  config: classpath:log4j2.xml
+
+
+
+
+
+
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://202.200.126.139:3306/SchoolEpidemic?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    username: acloggo
-    password: ENC(GM3R2SVlWDzVTXjtbcuel2eovlLKUhWF)
+    url: jdbc:mysql://127.0.0.1:3306/SchoolEpidemic?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 369cc
 
   jpa:
     hibernate:
@@ -14,27 +35,6 @@ spring:
 logging:
   config: classpath:log4j2.xml
 
-
-
-
-
-
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://127.0.0.1:3306/go?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-#    username: root
-#    password: 369cc
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: false
-#
-#
-#logging:
-#  config: classpath:log4j2.xml
-#
 
 
 
