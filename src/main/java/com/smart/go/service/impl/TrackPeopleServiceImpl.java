@@ -3,7 +3,6 @@ package com.smart.go.service.impl;
 import com.smart.go.content.*;
 import com.smart.go.dao.ApDao;
 import com.smart.go.dao.MoveInfoDao;
-import com.smart.go.domain.MoveInfo;
 import com.smart.go.service.TrackPeopleService;
 import com.smart.go.util.GPSUtil;
 import com.smart.go.util.ResultBean;

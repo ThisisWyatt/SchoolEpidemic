@@ -1,7 +1,6 @@
 package com.smart.go.controller;
 
 import com.smart.go.dao.SingleLogDao;
-import com.smart.go.domain.SingleLog;
 import com.smart.go.service.impl.BuildMoveInfoServiceImpl;
 import com.smart.go.service.impl.ReadAndExactDataServiceImpl;
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 
 /**
