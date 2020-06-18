@@ -31,7 +31,7 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
     MoveInfo sPoint(String peopleId, Date startTime, Date endTime);
 
     // description 根据人员Id查询在某个时间段的ap连接信息
-    @Query(value = "select people_id as peopleId,name as name,department as department,location as location,location_from as locationFrom, location_to as locaionTo,record_time as recordTime,campus as campus from SchoolEpidemic.move_info where people_id=?1 and record_time BETWEEN ?2 AND ?3", nativeQuery = true)
+    @Query(value = "select people_id as peopleId,name as name,department as department,location as location,location_from as locationFrom, location_to as locationTo,record_time as recordTime,campus as campus from SchoolEpidemic.move_info where people_id=?1 and record_time BETWEEN ?2 AND ?3", nativeQuery = true)
     List<MoveInfoProjection> findInPeriod(String peopleId, Date startTime, Date endTime);
 
     //根据Id查询出基本信息

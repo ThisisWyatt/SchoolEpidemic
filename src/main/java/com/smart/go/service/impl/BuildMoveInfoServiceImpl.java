@@ -58,7 +58,6 @@ public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
     @Override
     public void buildMoveInfo2() {
 
-
         Date dateYesterday0 = new Date(new Date().getTime() - 86400000L);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date dateYesterday = new Date();

@@ -70,7 +70,11 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
                     GPSUtil.forPathInfo(p); //坐标转换
                     pathInfoList.add(p);
 
-                } else {
+                } else { //切换或者漫游
+                    if (m1.getLocationTo() == null) {
+                        System.out.println("m1.getLocationFrom():" + m1.getLocationFrom());
+                        System.out.println("m1.getLocationTo()为空");
+                    }
                     ApInfoProjection a1 = apDao.getLatLngByBName(m1.getLocationFrom().substring(0, m1.getLocationFrom().indexOf(" ")));
                     ApInfoProjection a2 = apDao.getLatLngByBName(m1.getLocationTo().substring(0, m1.getLocationTo().indexOf(" ")));
                     PathInfo p1 = new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocationFrom(), dateFormat.format(m1.getRecordTime()), a1.getLat(), a1.getLng(), m1.getCampus());

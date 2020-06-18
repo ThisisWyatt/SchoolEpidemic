@@ -20,7 +20,7 @@ public class DruidConfiguration {
     public ServletRegistrationBean druidStatViewServlet() {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
         // 白名单 也可添加黑名单 第一个参数改为“deny”即可(deny优先级高于allow)
-        servletRegistrationBean.addInitParameter("allow", "127.0.0.1");
+//        servletRegistrationBean.addInitParameter("allow", "127.0.0.1");
         // 监控页面登陆账号
         servletRegistrationBean.addInitParameter("loginUsername", "admin");
         // 监控页面登陆密码

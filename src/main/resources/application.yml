@@ -1,28 +1,3 @@
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://202.200.126.139:3306/SchoolEpidemic?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-#    username: acloggo
-#    password: ENC(GM3R2SVlWDzVTXjtbcuel2eovlLKUhWF)
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: false
-#
-#
-#logging:
-#  config: classpath:log4j2.xml
-
-
-
-
-
-
-
-
-
-
 spring:
   datasource:
     #  Mysql连接信息
@@ -57,7 +32,6 @@ spring:
 
 
 
-
 #spring:
 #  datasource:
 #    #  Mysql连接信息
@@ -88,5 +62,5 @@ spring:
 #      # 配置监控统计拦截的filters
 #
 #      filters: stat,wall
-#
-#
+
+
