@@ -16,11 +16,11 @@ import java.util.Date;
 public class MoveInfo implements Serializable {
 
     @Id
-    @Column(name = "order_id", length = 50)
+    @Column(name = "order_id", length = 10)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
     @Id
-    @Column(name = "people_id", length = 50)     //学号或职工号
+    @Column(name = "people_id", length = 16)     //学号或职工号
     private String peopleId;
     @Id
     @Column(name = "record_time")   //记录时间

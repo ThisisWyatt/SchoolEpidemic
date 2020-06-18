@@ -16,10 +16,10 @@ import java.util.Date;
 public class SingleLog implements Serializable {
 
     @Id
-    @Column(name = "record_time", length = 190)
+    @Column(name = "record_time", length = 6)
     private Date recordTime;    //记录时间
     @Id
-    @Column(name = "user_mac", length = 190)
+    @Column(name = "user_mac", length = 32)
     private String userMac;     //用户mac地址
     @Column(name = "ap_name")
     private String apName;      //AP增加或减少用户时的AP名字

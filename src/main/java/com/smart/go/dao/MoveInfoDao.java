@@ -1,5 +1,6 @@
 package com.smart.go.dao;
 
+import com.smart.go.content.MoveInfoProjection;
 import com.smart.go.content.PathInfoProjection;
 import com.smart.go.domain.MoveInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,12 +27,12 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
     List<String> count2(String location, Date startTime, Date endTime);
 
     // description 离当前时间最近的一次Ap连接信息
-    @Query(value = "SELECT * FROM SchoolEpidemic.move_info where ( people_id=?1 and record_time< ?3 and record_time > ?2 ) ORDER BY ?3 -record_time ASC limit 1 ;", nativeQuery = true)
+    @Query(value = "SELECT * FROM SchoolEpidemic.move_info where ( people_id=?1 and record_time between ?2 and ?3) ORDER BY ?3 -record_time ASC limit 1 ;", nativeQuery = true)
     MoveInfo sPoint(String peopleId, Date startTime, Date endTime);
 
     // description 根据人员Id查询在某个时间段的ap连接信息
-    @Query(value = "select * from SchoolEpidemic.move_info where people_id=?1 and record_time BETWEEN ?2 AND ?3", nativeQuery = true)
-    List<MoveInfo> findInPeriod(String peopleId, Date startTime, Date endTime);
+    @Query(value = "select people_id as peopleId,name as name,department as department,location as location,location_from as locationFrom, location_to as locaionTo,record_time as recordTime,campus as campus from SchoolEpidemic.move_info where people_id=?1 and record_time BETWEEN ?2 AND ?3", nativeQuery = true)
+    List<MoveInfoProjection> findInPeriod(String peopleId, Date startTime, Date endTime);
 
     //根据Id查询出基本信息
     @Query(value = "SELECT distinct people_id as peopleId,name as peopleName,department as department FROM SchoolEpidemic.move_info where people_id=?1  ;", nativeQuery = true)

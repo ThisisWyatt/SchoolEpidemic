@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "user_info")
 public class User {
     @Id
-    @Column(name = "user_id", length = 50)      //用户ID 学生学号或老师工号
+    @Column(name = "user_id", length = 16)      //用户ID 学生学号或老师工号
     private String userId;
     @Column(name = "name")                       //姓名
     private String name;

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "ap_info")
 public class Ap {
     @Id
-    @Column(name = "MAC_ADDRESS", length = 190)   //MAC地址
+    @Column(name = "MAC_ADDRESS", length = 32)   //MAC地址
     private String macAddress;
     @Column(name = "AP_NAME")       //AP名字
     private String apName;

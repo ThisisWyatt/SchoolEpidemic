@@ -47,13 +47,13 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
         System.out.println(message.getId() + " " + startTime + " " + endTime);
 
-        List<MoveInfo> moveInfoList = moveInfoDao.findInPeriod(message.getId(), startTime, endTime);
+        List<MoveInfoProjection> moveInfoList = moveInfoDao.findInPeriod(message.getId(), startTime, endTime);
         System.out.println("moveInfoList.size(): " + moveInfoList.size());
 
         List<PathInfo> pathInfoList = new LinkedList<>();
         for (int i = 1; i < moveInfoList.size(); i++) {
-            MoveInfo m1 = moveInfoList.get(i - 1);
-            MoveInfo m2 = moveInfoList.get(i);
+            MoveInfoProjection m1 = moveInfoList.get(i - 1);
+            MoveInfoProjection m2 = moveInfoList.get(i);
 
             Date time1 = m1.getRecordTime();
             Date time2 = m2.getRecordTime();
@@ -83,9 +83,9 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             }
         }
 
+        //去重
         LinkedHashSet<PathInfo> pathInfoListH = new LinkedHashSet<>(pathInfoList);
         pathInfoList = new LinkedList<>(pathInfoListH);
-        List<PathInfoProjection> relatePeopleListInfo = new LinkedList<>();
 
         ResultBean resultBean = new ResultBean();
         resultBean.setDataList(pathInfoList);
@@ -103,11 +103,11 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
         Date startTime = sdf2.parse(message.getStartTime());
         Date endTime = sdf2.parse(message.getEndTime());
 
-        List<MoveInfo> moveInfoList = moveInfoDao.findInPeriod(message.getId(), startTime, endTime);
+        List<MoveInfoProjection> moveInfoList = moveInfoDao.findInPeriod(message.getId(), startTime, endTime);
         List<PathInfo1> pathInfoList = new LinkedList<>();
         for (int i = 1; i < moveInfoList.size(); i++) {
-            MoveInfo m1 = moveInfoList.get(i - 1);
-            MoveInfo m2 = moveInfoList.get(i);
+            MoveInfoProjection m1 = moveInfoList.get(i - 1);
+            MoveInfoProjection m2 = moveInfoList.get(i);
 
             Date time1 = m1.getRecordTime();
             Date time2 = m2.getRecordTime();
