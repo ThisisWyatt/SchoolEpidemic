@@ -1,10 +1,7 @@
 package com.smart.go;
 
-import com.smart.go.dao.ApDao;
-import com.smart.go.dao.ApUserDao;
 import com.smart.go.dao.MoveInfoDao;
-import com.smart.go.service.impl.BuildMoveInfoServiceImpl;
-import com.smart.go.util.ExtractData;
+import com.smart.go.domain.MoveInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -14,26 +11,25 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 class GoApplicationTests {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
+    @Resource
+    private MoveInfoDao moveInfoDao;
 
-//    @Test
-//    void testTime(){
-//        Date dateYesterday0 = new Date(new Date().getTime() - 86400000L);
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//        Date dateYesterday=new Date();
-//        try {
-//            String dateYesterday1=formatter.format(dateYesterday0);
-//            dateYesterday=formatter.parse(dateYesterday1);
-//            System.out.println(dateYesterday);
-//        }catch (ParseException e){
-//            e.printStackTrace();
-//            logger.error("格式化当前时间日期格式错误");
-//        }
-//    }
+    @Test
+    void testTime() throws ParseException {
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startTime = sdf1.parse("2020-06-17 00:00:00");
+        Date endTime = sdf1.parse("2020-06-17 15:00:00");
+        List<MoveInfo> moveInfoList = moveInfoDao.findInPeriod("2180120050", startTime, endTime);
+        System.out.println(moveInfoList.size());
+
+    }
 }
 
 

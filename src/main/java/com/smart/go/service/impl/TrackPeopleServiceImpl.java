@@ -42,10 +42,14 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime = sdf1.parse(message.getStartTime());
-        Date endTime = sdf1.parse(message.getEndTime());
+        Date startTime = sdf2.parse(message.getStartTime());
+        Date endTime = sdf2.parse(message.getEndTime());
 
-        List<MoveInfo> moveInfoList = moveInfoDao.getByPeopleIdAndRecordTimeBetween(message.getId(), startTime, endTime);
+        System.out.println(message.getId() + " " + startTime + " " + endTime);
+
+        List<MoveInfo> moveInfoList = moveInfoDao.findInPeriod(message.getId(), startTime, endTime);
+        System.out.println("moveInfoList.size(): " + moveInfoList.size());
+
         List<PathInfo> pathInfoList = new LinkedList<>();
         for (int i = 1; i < moveInfoList.size(); i++) {
             MoveInfo m1 = moveInfoList.get(i - 1);
@@ -60,7 +64,7 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
             long diffMinutes = diff / (60 * 1000) % 60;
             //如果前后两条记录时间小于5分钟则认为是路过 不计算入行为轨迹
             if (diffMinutes >= 5) {
-                if (m1.getLocation() != null) {
+                if (m1.getLocation() != null) { //增加或者删除Ap
                     ApInfoProjection a = apDao.getLatLngByBName(m1.getLocation().substring(0, m1.getLocation().indexOf(" "))); //获取位置所在建筑物的地理坐标
                     PathInfo p = new PathInfo(m1.getPeopleId(), m1.getName(), m1.getDepartment(), m1.getLocation(), dateFormat.format(m1.getRecordTime()), a.getLat(), a.getLng(), m1.getCampus());
                     GPSUtil.forPathInfo(p); //坐标转换
@@ -96,10 +100,10 @@ public class TrackPeopleServiceImpl implements TrackPeopleService {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime = sdf1.parse(message.getStartTime());
-        Date endTime = sdf1.parse(message.getEndTime());
+        Date startTime = sdf2.parse(message.getStartTime());
+        Date endTime = sdf2.parse(message.getEndTime());
 
-        List<MoveInfo> moveInfoList = moveInfoDao.getByPeopleIdAndRecordTimeBetween(message.getId(), startTime, endTime);
+        List<MoveInfo> moveInfoList = moveInfoDao.findInPeriod(message.getId(), startTime, endTime);
         List<PathInfo1> pathInfoList = new LinkedList<>();
         for (int i = 1; i < moveInfoList.size(); i++) {
             MoveInfo m1 = moveInfoList.get(i - 1);

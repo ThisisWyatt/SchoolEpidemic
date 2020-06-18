@@ -17,11 +17,7 @@ import java.util.List;
  **/
 public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
 
-    // description 测试使用原生SQL
-    @Query(value = "select * from SchoolEpidemic.move_info where move_info.people_id =?1", nativeQuery = true)
-    List<MoveInfo> mList(String peopleId);
-
-    // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户Id select * from move_info where location like ‘location’ Or locationFrom like 'location' Or locationTo like ‘location’ and recordTime < endTime and recordTime > time
+    // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户Id
     @Query(value = "select distinct  people_id from SchoolEpidemic.move_info where (location like ?1 or  location_from like ?1 or location_to like ?1) and (record_time BETWEEN ?2 and ?3 );", nativeQuery = true)
     List<String> count1(String location, Date startTime, Date endTime);
 
@@ -34,7 +30,8 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
     MoveInfo sPoint(String peopleId, Date startTime, Date endTime);
 
     // description 根据人员Id查询在某个时间段的ap连接信息
-    List<MoveInfo> getByPeopleIdAndRecordTimeBetween(String peopleId, Date startTime, Date endTime);
+    @Query(value = "select * from SchoolEpidemic.move_info where people_id=?1 and record_time BETWEEN ?2 AND ?3", nativeQuery = true)
+    List<MoveInfo> findInPeriod(String peopleId, Date startTime, Date endTime);
 
     //根据Id查询出基本信息
     @Query(value = "SELECT distinct people_id as peopleId,name as peopleName,department as department FROM SchoolEpidemic.move_info where people_id=?1  ;", nativeQuery = true)
@@ -43,13 +40,13 @@ public interface MoveInfoDao extends JpaRepository<MoveInfo, String> {
     //关联Ap增加、删除的情况
     @Transactional
     @Modifying
-    @Query(value = "insert into SchoolEpidemic.move_info (record_time,people_id,name,department,ap_type,ap_name) select aclog_result.record_time,user_info.user_id,user_info.name,user_info.department,aclog_result.type,aclog_result.ap_name from SchoolEpidemic.aclog_result,SchoolEpidemic.user_info,SchoolEpidemic.ap_user_info where (aclog_result.record_time  BETWEEN ?1 and ?2) and (aclog_result.user_mac=ap_user_info.MAC_ADDRESS ) and (ap_user_info.USER_ID=user_info.user_id) and (aclog_result.ap_name is not null)", nativeQuery = true)
+    @Query(value = "insert into SchoolEpidemic.move_info (record_time,people_id,name,department,ap_type,ap_name) select aclog_result.record_time,user_info.user_id,user_info.name,user_info.department,aclog_result.type,aclog_result.ap_name from SchoolEpidemic.aclog_result,SchoolEpidemic.user_info,SchoolEpidemic.ap_user_info where (aclog_result.ap_name is not null) and (aclog_result.record_time  BETWEEN ?1 and ?2) and (aclog_result.user_mac=ap_user_info.MAC_ADDRESS ) and (ap_user_info.USER_ID=user_info.user_id)", nativeQuery = true)
     void buildMoveInfo1(Date dateYesterday, Date dateToday);
 
     //关联Ap切换、漫游的情况
     @Transactional
     @Modifying
-    @Query(value = "insert into SchoolEpidemic.move_info (record_time,people_id,name,department,ap_type,ap_name_from,ap_name_to) select aclog_result.record_time,user_info.user_id,user_info.name,user_info.department,aclog_result.type,aclog_result.ap_name_from,aclog_result.ap_name_to from  SchoolEpidemic.aclog_result,SchoolEpidemic.user_info,SchoolEpidemic.ap_user_info where (aclog_result.record_time  BETWEEN '2020-06-08 00:00:00' and '2020-06-08 00:20:00') and (aclog_result.user_mac=ap_user_info.MAC_ADDRESS ) and (ap_user_info.USER_ID=user_info.user_id) and (aclog_result.ap_name is  null)", nativeQuery = true)
+    @Query(value = "insert into SchoolEpidemic.move_info (record_time,people_id,name,department,ap_type,ap_name_from,ap_name_to) select aclog_result.record_time,user_info.user_id,user_info.name,user_info.department,aclog_result.type,aclog_result.ap_name_from,aclog_result.ap_name_to from  SchoolEpidemic.aclog_result,SchoolEpidemic.user_info,SchoolEpidemic.ap_user_info where  (aclog_result.ap_name is  null) and (aclog_result.record_time  BETWEEN ?1 and ?2) and (aclog_result.user_mac=ap_user_info.MAC_ADDRESS ) and (ap_user_info.USER_ID=user_info.user_id)", nativeQuery = true)
     void buildMoveInfo2(Date dateYesterday, Date dateToday);
 
     @Query(value = "select *  from SchoolEpidemic.move_info where record_time >=  ?1", nativeQuery = true)

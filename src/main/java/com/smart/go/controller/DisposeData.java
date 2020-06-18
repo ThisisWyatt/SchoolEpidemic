@@ -44,7 +44,7 @@ public class DisposeData {
         logger.info(new Date() + "日志原文件处理结束");
     }
 
-    @Scheduled(cron = "0 15 4 * * ? ")
+    @Scheduled(cron = "0 30 5 * * ? ")
         //每天1:30开始处理日志源文件
     void BuildMoveInfo() {
 

@@ -22,6 +22,10 @@ public class User {
     @Column(name = "department")                 //学生 班级或 老师部门
     private String department;
 
+
+    public User() {
+    }
+
     public User(String userId, String name, String department) {
         this.userId = userId;
         this.name = name;

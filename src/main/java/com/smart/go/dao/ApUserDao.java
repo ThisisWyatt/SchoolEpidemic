@@ -15,16 +15,4 @@ import java.util.List;
  **/
 public interface ApUserDao extends JpaRepository<ApUser, String> {
 
-    List<ApUser> findByMacAddress(String userMac);
-
-    @Query(value = "select user_id from SchoolEpidemic.user_info where mac_address=?1", nativeQuery = true)
-    List<String> findIdByMacAddress(String userMac);
-
-    @Query(value = "select * from schoolepidemic.user_info where MAC_ADDRESS=?1", nativeQuery = true)
-    List<ApUser> findByMacAddress1(String macAddress);
-
-    @Transactional
-    @Modifying
-    @Query(value = "DELETE from schoolepidemic.user_info where MAC_ADDRESS=?1", nativeQuery = true)
-    void delete(String macAddress);
 }

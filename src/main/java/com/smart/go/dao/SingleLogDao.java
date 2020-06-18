@@ -21,7 +21,7 @@ public interface SingleLogDao extends JpaRepository<SingleLog, Date> {
 
     @Modifying
     @Transactional
-    @Query(value = "truncate  table  schoolepidemic.aclog_result", nativeQuery = true)
+    @Query(value = "truncate  table  SchoolEpidemic.aclog_result", nativeQuery = true)
     void truncateTableAcLogResult();
 
 }
