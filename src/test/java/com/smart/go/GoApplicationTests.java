@@ -20,6 +20,15 @@ class GoApplicationTests {
     @Resource
     private MoveInfoDao moveInfoDao;
 
+    @Test
+    void testReturn() {
+        System.out.println("hello");
+        System.out.println("hello");
+        int a = (int) (Math.random() * 10);
+        if (a > 5)
+            return;
+        System.out.println("hello");
+    }
 
 }
 

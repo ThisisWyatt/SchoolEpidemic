@@ -53,7 +53,9 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
                     }
 
                     if (singleLog != null) {
-                        singleLogService.save(singleLog);
+                        //排除宿舍区的信息
+                        if ((!singleLog.getApName().startsWith("X") || !singleLog.getApName().startsWith("L") || !singleLog.getApName().startsWith("QJ")) || ((!singleLog.getApNameFrom().startsWith("X") || !singleLog.getApNameFrom().startsWith("L") || !singleLog.getApNameFrom().startsWith("QJ")) && (!singleLog.getApNameTo().startsWith("X") || !singleLog.getApNameTo().startsWith("L") || !singleLog.getApNameTo().startsWith("QJ"))))
+                            singleLogService.save(singleLog);
                     }
                 } else {
                     logger.info("此条记录为空");

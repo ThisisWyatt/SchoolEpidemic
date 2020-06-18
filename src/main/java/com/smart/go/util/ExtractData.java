@@ -44,6 +44,7 @@ public class ExtractData {
         if (mat.find() && mat.groupCount() == 2) {
             String userMac = mat.group(1).replace(".", "").toUpperCase();
             String apName = mat.group(2);
+
             singleLog = new SingleLog(recordDate, userMac, apName, null, null, 3);
         }
         return singleLog;
