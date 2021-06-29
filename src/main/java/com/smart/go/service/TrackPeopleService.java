@@ -16,9 +16,19 @@ import java.text.ParseException;
 @Service
 public interface TrackPeopleService {
 
-    // description 根据人员Id查询在某个时间段的ap连接信息
+    /**
+     * 根据人员Id查询在某个时间段的ap连接信息
+     *
+     * @param message 包含id、开始时间和结束时间的JavaBean
+     * @return data为包含人员id、姓名、department、所在位置、时间、校区等（参考前后端对接文档）的JavaBean(PathInfo)的ResultBean
+     */
     ResultBean trackSinglePeople(TrackFromMessage message) throws ParseException;
 
-    // description 根据人员Id查询在某个时间段接触过的人员Id
+    /**
+     * 根据人员Id查询在某个时间段接触过的人员Id
+     *
+     * @param message 包含id、开始时间和结束时间的JavaBean
+     * @return data为接触人员信息的resultBean
+     */
     ResultBean trackRelatedPeople(TrackFromMessage message) throws ParseException;
 }

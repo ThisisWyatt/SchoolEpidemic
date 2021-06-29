@@ -18,8 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Description
- * Author cloudr
+ * Description 各种人数统计的具体实现
+ * Author wyatt
  * Date 2020/5/5 22:18
  * Version 1.0
  **/
@@ -31,8 +31,14 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     @Resource
     private ApDao apDao;
 
+
+    /**
+     * 查询目标时间段内在该地点有操作的所有用户
+     *
+     * @param message 地点、目标时间段的开始和结束时间
+     * @return
+     */
     @Override
-    // description 查询目标时间段内在该地点有操作的所有用户
     public ResultBean countInPeriod(CountMessage message) throws ParseException {
 
         ResultBean resultBean = new ResultBean();
@@ -43,32 +49,43 @@ public class CountPeopleServiceImpl implements CountPeopleService {
         return resultBean;
     }
 
+    /**
+     * 查询目标时间段内在该地点有操作的所有用户
+     *
+     * @param message 地点、目标时间段的开始和结束时间
+     * @return
+     */
     List<String> countInPeriodUtil(CountMessage message) throws ParseException {
 
+        //sdf1为该时间点，sdf2为当天的零点
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        //获取目标时间段的开始时间和结束时间（开始结束为同一时间，则这个时间段就是这个时间点）
         Date startTime = sdf1.parse(message.getStartTime());
         Date endTime = sdf1.parse(message.getEndTime());
-        Date zeroTime = sdf2.parse(message.getStartTime());//当天凌晨时间
+        //当天凌晨时间
+        Date zeroTime = sdf2.parse(message.getStartTime());
 
         // description 查询在一段时间内某个建筑的所有新接入、断开、切换出、切换入的所有用户
         List<String> moveInfoList1 = moveInfoService.count1("%" + message.getLocation() + "%", startTime, endTime);
 
         // description 查询在当天凌晨0点到某一时间点前全部连接过用户Id (add  location_to)
         List<String> peopleIdList = moveInfoService.count2("%" + message.getLocation() + "%", zeroTime, endTime);
+
         List<String> moveInfoList2 = new LinkedList<>();
         for (String peopleId : peopleIdList) {
             //如果用户距离这个时间点最近的AP行为为add、location_from则表示已经接入当前点
             MoveInfo m = moveInfoService.sPoint(peopleId, zeroTime, startTime);
             if (m != null) {
-                if (m.getLocation() != null && m.getApType().equals("增加") && m.getLocation().startsWith(message.getLocation()))
+                if (m.getLocation() != null && m.getApType().equals("增加") && m.getLocation().startsWith(message.getLocation())) {
                     moveInfoList2.add(m.getPeopleId());
-                else if (m.getLocationTo() != null && m.getLocationTo().startsWith(message.getLocation()))
+                } else if (m.getLocationTo() != null && m.getLocationTo().startsWith(message.getLocation())) {
                     moveInfoList2.add(m.getPeopleId());
+                }
             }
         }
 
-        //求并集
+        //求并集，因为当前时间段接入人数由两部分组成；这个时间段内接入人数 + 这个时间段内ap无操作但已经接入的用户
         moveInfoList1.removeAll(moveInfoList2);
         moveInfoList1.addAll(moveInfoList2);
 
@@ -76,8 +93,14 @@ public class CountPeopleServiceImpl implements CountPeopleService {
     }
 
 
+    /**
+     * 查询当前点接入的所有用户
+     *
+     * @param countMessage
+     * @return
+     * @throws ParseException
+     */
     @Override
-    // description 查询当前点接入的所有用户
     public ResultBean countAtPoint(CountMessage countMessage) throws ParseException {
 
         //当天凌晨时间
@@ -96,17 +119,15 @@ public class CountPeopleServiceImpl implements CountPeopleService {
             //如果用户距离这个时间点最近的AP行为为add、location_from则表示已经接入当前点
             MoveInfo m = moveInfoService.sPoint(peopleId, zeroTime, pointTime);
             if (m != null) {
-                if (m.getLocation() != null && m.getApType().equals("增加") && m.getLocation().startsWith(countMessage.getLocation()))
+                if (m.getLocation() != null && m.getApType().equals("增加") && m.getLocation().startsWith(countMessage.getLocation())) {
                     moveInfoList1.add(m.getPeopleId());
-                else if (m.getLocationTo() != null && m.getLocationTo().startsWith(countMessage.getLocation()))
+                } else if (m.getLocationTo() != null && m.getLocationTo().startsWith(countMessage.getLocation())) {
                     moveInfoList1.add(m.getPeopleId());
+                }
             }
         }
 
-        for (String m : moveInfoList1) {
-            System.out.println(m);
-        }
-
+        //转换为前端需要的格式对应的JavaBean
         ResultBean resultBean = new ResultBean();
         resultBean.setDataList(moveInfoList1);
         resultBean.setMessage("查询成功");
@@ -115,11 +136,18 @@ public class CountPeopleServiceImpl implements CountPeopleService {
         return resultBean;
     }
 
+    /**
+     * 查询目标时间段所有建筑中Ap接入人数
+     *
+     * @param message 开始时间和结束时间
+     * @return 各个地点的名称、接入人数和位置IP
+     */
     @Override
-    // description  查询目标时间段所有建筑中Ap接入人数
     public ResultBean countInPeriodInAllBuildings(CountMessage message) throws ParseException {
 
+        //获取所有建筑的名称
         List<String> buildingList = apDao.getBuildingList();
+        //存储返回结果的列表
         List<CountPeopleMessage> countPeopleList = new LinkedList<>();
 
         // 对每一栋建筑查询相应时段的人数
@@ -127,13 +155,19 @@ public class CountPeopleServiceImpl implements CountPeopleService {
             //构造查询条件
             ApInfoProjection apInfo = apDao.getLatLngByBName(building);
             CountMessage m = new CountMessage(message.getStartTime(), message.getEndTime(), building);
-            int num = countInPeriod(m).getDataList().size(); //建筑内接入人数
+            // 查询建筑内接入人数
+            int num = countInPeriod(m).getDataList().size();
+            //根据建筑名获取其经纬度
             ApInfoProjection a = apDao.getLatLngByBName(building);
+            //将查询结果存入CountPeopleMessage类中
             CountPeopleMessage c = new CountPeopleMessage(building, num, a.getLat(), a.getLng());
+            //将查询结果中的经纬度进行转换
             GPSUtil.bd_decryptNum(c);
+            //查询结果存入列表中
             countPeopleList.add(c);
         }
 
+        //转换为前端需要的格式对应的JavaBean
         ResultBean resultBean = new ResultBean();
         resultBean.setDataList(countPeopleList);
         resultBean.setSuccess(true);
@@ -142,47 +176,63 @@ public class CountPeopleServiceImpl implements CountPeopleService {
         return resultBean;
     }
 
+    /**
+     * 查询一个建筑内所有楼层的人数
+     *
+     * @param message 建筑名称、目标时间段的开始和结束时间段
+     * @return 各个地点的名称、接入人数和位置IP
+     */
     @Override
-    // description 查询一个建筑内所有楼层的人数
     public ResultBean queryInPeriodInABuilding(CountMessage message) throws ParseException {
-
+        //存储返回结果的列表
         List<CountPeopleMessage> countPeopleList = new LinkedList<>();
 
+        //根据建筑名字查询所有楼层
         List<String> layers = apDao.getLayers(message.getLocation());
         for (String layer : layers) {
             String location = message.getLocation() + " " + layer;
             CountMessage m = new CountMessage(message.getStartTime(), message.getEndTime(), location);
-            int num = countInPeriod(m).getDataList().size(); //楼层内接入人数
+            //查询楼层内接入人数
+            int num = countInPeriod(m).getDataList().size();
             CountPeopleMessage c = new CountPeopleMessage(location, num);
+            //查询结果存入列表中
             countPeopleList.add(c);
         }
 
+        //转换为前端需要的格式对应的JavaBean
         ResultBean resultBean = new ResultBean();
         resultBean.setDataList(countPeopleList);
         resultBean.setSuccess(true);
         resultBean.setMessage("查询成功");
 
         return resultBean;
-
     }
 
+    /**
+     * 查询一个楼层内所有房间的人数
+     *
+     * @param message 建筑名称、楼层、目标时间段的开始和结束时间段
+     * @return 各个地点的名称、接入人数和位置IP
+     */
     @Override
-    // description 查询一个楼层内所有房间的人数
     public ResultBean queryInPeriodInALayer(CountMessage message) throws ParseException {
-
+        //存储返回结果的列表
         List<CountPeopleMessage> countPeopleList = new LinkedList<>();
 
         String[] location0 = message.getLocation().split(" ");
+        //根据建筑名字，楼层 查询所有房间
         List<String> rooms = apDao.getRooms(location0[0], location0[1]);
 
         for (String room : rooms) {
             String location = message.getLocation() + " " + room;
             CountMessage m = new CountMessage(message.getStartTime(), message.getEndTime(), location);
-            int num = countInPeriod(m).getDataList().size(); //房间内接入人数
+            //房间内接入人数
+            int num = countInPeriod(m).getDataList().size();
             CountPeopleMessage c = new CountPeopleMessage(location, num);
             countPeopleList.add(c);
         }
 
+        //转换为前端需要的格式对应的JavaBean
         ResultBean resultBean = new ResultBean();
         resultBean.setDataList(countPeopleList);
         resultBean.setSuccess(true);

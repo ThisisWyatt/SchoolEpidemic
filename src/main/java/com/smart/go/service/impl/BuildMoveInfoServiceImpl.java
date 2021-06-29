@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Description
- * Author cloudr 将从日志文件中得到的aclog_result表的数据联合其他几张表存入move_info中
+ * Description 将从日志文件中得到的aclog_result表的数据联合其他几张表存入move_info中
+ * Author wyatt
  * Date 2020/5/5 21:35
  * Version 1.0
  **/
@@ -31,6 +31,9 @@ public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
     @Resource
     private MoveInfoDao moveInfoDao;
 
+    /**
+     *关联得到除开位置信息、校区信息的其他信息
+     */
     @Override
     public void buildMoveInfo1() {
 
@@ -44,8 +47,10 @@ public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
             Date dateToday = formatter.parse(dateToday1);
             Date dateYesterday = formatter.parse(dateYesterday1);
 
-            moveInfoDao.buildMoveInfo1(dateYesterday, dateToday);    //关联Ap增加、删除的情况
-            moveInfoDao.buildMoveInfo2(dateYesterday, dateToday);    //关联Ap切换、漫游的情况
+            //关联Ap增加、删除的情况
+            moveInfoDao.buildMoveInfo1(dateYesterday, dateToday);
+            //关联Ap切换、漫游的情况
+            moveInfoDao.buildMoveInfo2(dateYesterday, dateToday);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -55,6 +60,9 @@ public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
 
     }
 
+    /**
+     * 关联得位置信息、校区信息的其他信息
+     */
     @Override
     public void buildMoveInfo2() {
 
@@ -80,7 +88,7 @@ public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
                     moveInfo.setLocation(apInfo.getLocation());
                     moveInfo.setCampus(apInfo.getCampus());
                     moveInfoDao.save(moveInfo);
-//                    logger.info("存取成功");
+                    // logger.info("存取成功");
                 } else {
                     try {
                         moveInfoDao.delete(moveInfo);
@@ -96,7 +104,7 @@ public class BuildMoveInfoServiceImpl implements BuildMoveInfoService {
                     moveInfo.setLocationTo(apInfoTo.getLocation());
                     moveInfo.setCampus(apInfoFrom.getCampus());
                     moveInfoDao.save(moveInfo);
-//                    logger.warn("存取成功");
+                    // logger.warn("存取成功");
                 } else {
                     moveInfoDao.delete(moveInfo);
                 }

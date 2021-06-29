@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * 后端将数据存在ResultBean这个Bean后，向前端发送
+ */
 @Component
 public class ResultBean {
 
@@ -13,9 +16,9 @@ public class ResultBean {
     private List<?> dataList;
 
     /**
-     * @param success
-     * @param data
-     * @param message
+     * @param success 查询是否成功的状态
+     * @param data  返回数据
+     * @param message 附带信息（例如“查询成功”、“尚未查询到相关信息”等）
      */
     public ResultBean(boolean success, Object data, String message) {
         this.success = success;

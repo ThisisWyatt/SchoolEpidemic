@@ -14,7 +14,8 @@ import java.util.Optional;
 
 /**
  * Description 根据Id查询老师或学生的信息
- * Author cloudr
+ *
+ * @Author wyatt
  * Date 2020/5/16 14:54
  * Version 1.0
  **/
@@ -24,14 +25,19 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Resource
     private UserDao userDao;
 
+    /**
+     * 根据Id查询老师或学生的信息
+     *
+     * @param id 老师或者学生的信息
+     * @return 包含id、name、department的resultBean
+     */
     @Override
-    // description 根据Id查询老师或学生的信息
     public ResultBean findUserInfo(String id) {
 
         ResultBean resultBean = new ResultBean();
         List<UserInfo> userInfoList = new LinkedList<>();
 
-
+        //利用Optional检测查询对象是否为null
         Optional<User> userOptional = userDao.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -45,6 +51,5 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         return resultBean;
-
     }
 }

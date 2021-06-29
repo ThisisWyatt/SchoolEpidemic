@@ -12,8 +12,8 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
- * Description
- * Author cloudr
+ * Description 处理数据
+ * Author wyatt
  * Date 2020/6/9 1:49
  * Version 1.0
  **/
@@ -30,8 +30,10 @@ public class DisposeDataController {
     private SingleLogDao singleLogDao;
 
 
+    /**
+     * 每天1:30开始处理日志源文件
+     */
     @Scheduled(cron = "0 30 1 * * ? ")
-        //每天1:30开始处理日志源文件
     void GetDataFromLog() {
 
         logger.info(new Date() + "日志原文件处理开始");
@@ -41,8 +43,10 @@ public class DisposeDataController {
         logger.info(new Date() + "日志原文件处理结束");
     }
 
+    /**
+     * 每天3:30开始融合表获取人员ap连接信息
+     */
     @Scheduled(cron = "0 30 3 * * ? ")
-        //每天3:30开始融合表获取人员ap连接信息
     void BuildMoveInfo() {
 
         logger.info(new Date() + "人员活动信息获取开始");

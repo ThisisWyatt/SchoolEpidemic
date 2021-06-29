@@ -17,8 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Description
- * Author cloudr
+ * Description 从日志中读取数据，处理并存入数据库
+ * Author wyatt
  * Date 2020/5/5 21:40
  * Version 1.0
  **/
@@ -35,11 +35,12 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
     public void TestReadLog() {
         try {
 
+            // -86400000L 是为得到前一天的日期(处理的数据都是前一天的数据)
             Date date = new Date(new Date().getTime() - 86400000L);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = formatter.format(date);
 
-//            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("C:/Users/life/Desktop/"+dateString+".log")), StandardCharsets.UTF_8));
+            //从日志中读取逐行读取数据进行处理
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("/root/SchoolEpidemic/files/logFiles/" + dateString + ".log")), StandardCharsets.UTF_8));
             while (br.readLine() != null) {
                 String messages = br.readLine();
@@ -53,13 +54,15 @@ public class ReadAndExactDataServiceImpl implements ReadAndExactDataService {
                     }
 
                     if (singleLog != null) {
-                        //排除宿舍区的信息
                         if (singleLog.getApName() != null) {
-                            if (!singleLog.getApName().startsWith("X") && !singleLog.getApName().startsWith("L") && !singleLog.getApName().startsWith("QJ"))
+                            //排除宿舍区的信息，此系统不需要采集宿舍区的信息
+                            if (!singleLog.getApName().startsWith("X") && !singleLog.getApName().startsWith("L") && !singleLog.getApName().startsWith("QJ")) {
                                 singleLogService.save(singleLog);
+                            }
                         } else {
-                            if ((!singleLog.getApNameFrom().startsWith("X") && !singleLog.getApNameFrom().startsWith("L") && !singleLog.getApNameFrom().startsWith("QJ")) && (!singleLog.getApNameTo().startsWith("X") && !singleLog.getApNameTo().startsWith("L") && !singleLog.getApNameTo().startsWith("QJ")))
+                            if ((!singleLog.getApNameFrom().startsWith("X") && !singleLog.getApNameFrom().startsWith("L") && !singleLog.getApNameFrom().startsWith("QJ")) && (!singleLog.getApNameTo().startsWith("X") && !singleLog.getApNameTo().startsWith("L") && !singleLog.getApNameTo().startsWith("QJ"))) {
                                 singleLogService.save(singleLog);
+                            }
                         }
                     }
                 } else {

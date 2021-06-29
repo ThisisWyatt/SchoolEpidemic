@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Description
+ * Description  Druid配置
  * Author cloudr
  * Date 2020/6/18 14:13
  * Version 1.0
@@ -25,9 +25,8 @@ public class DruidConfiguration {
         servletRegistrationBean.addInitParameter("loginUsername", "admin");
         // 监控页面登陆密码
         servletRegistrationBean.addInitParameter("loginPassword", "1111");
-        servletRegistrationBean.addInitParameter
-                // 是否能够重置数据
-                        ("resetEnable", "false");
+        // 是否能够重置数据
+        servletRegistrationBean.addInitParameter("resetEnable", "false");
         return servletRegistrationBean;
     }
 

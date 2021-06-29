@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Description
- * Author Cloudr
+ * Description 清空原始数据表
+ * Author wyatt
  * Date 2020/4/22 14:29
  **/
 public interface SingleLogDao extends JpaRepository<SingleLog, Date> {

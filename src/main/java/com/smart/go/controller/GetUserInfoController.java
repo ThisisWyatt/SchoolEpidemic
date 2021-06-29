@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 /**
- * Description
- * Author cloudr
+ * Description 获取某个用户的信息
+ *
+ * @Author wyatt
  * Date 2020/5/16 16:33
  * Version 1.0
  **/
@@ -25,6 +26,12 @@ public class GetUserInfoController {
     @Resource
     private UserInfoServiceImpl userInfoService;
 
+    /**
+     * 根据人员id获取其信息
+     *
+     * @param params 包含id的Json格式的数据
+     * @return 包含id、name、department的resultBean
+     */
     @RequestMapping("/byId")
     @ResponseBody
     public ResultBean getUserInfoById(@RequestBody String params) {

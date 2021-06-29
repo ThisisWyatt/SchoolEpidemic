@@ -18,18 +18,15 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 
 /**
- * Description 统计人数
- * Author cloudr
+ * Description 统计某个时间段内人数
+ * Author wyatt
  * Date 2020/5/3 22:14
  * Version 1.0
  **/
 @Controller
 @RequestMapping("/count")
 public class CountController {
-    // TODO 捕捉异常 增加日志
-
     private Logger logger = LogManager.getLogger(this.getClass());
-
 
     @Resource
     private MoveInfoServiceImpl moveInfoService;
@@ -43,19 +40,30 @@ public class CountController {
         return "conditionPage";
     }
 
+    /**
+     * 查询目标时间段所有建筑中Ap接入人数
+     *
+     * @param params 开始时间和结束时间
+     * @return 各个地点的名称、接入人数和位置IP
+     */
     @ResponseBody
     @RequestMapping("/queryInPeriodInAllBuilding")
-    // description  查询目标时间段所有建筑中Ap接入人数
     public ResultBean queryInPeriodInAllBuilding(@RequestBody String params) throws ParseException {
 
+        //JSON格式转换为message类
         CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
         });
 
         return countPeopleService.countInPeriodInAllBuildings(message);
     }
 
+    /**
+     * 查询一个建筑内所有楼层的人数
+     *
+     * @param params 建筑名称、目标时间段的开始和结束时间段
+     * @return 各个地点的名称、接入人数和位置IP
+     */
     @ResponseBody
-    // description 查询一个建筑内所有楼层的人数
     @RequestMapping("/queryInPeriodInABuilding")
     public ResultBean queryInPeriodInABuilding(@RequestBody String params) throws ParseException {
         CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
@@ -64,6 +72,12 @@ public class CountController {
         return countPeopleService.queryInPeriodInABuilding(message);
     }
 
+    /**
+     * 查询一个楼层内所有房间及其人数
+     *
+     * @param params 建筑名称、楼层、目标时间段的开始和结束时间段
+         * @return 各个地点的名称、接入人数和位置IP
+     */
     @ResponseBody
     @RequestMapping("/queryInPeriodInALayer")
     public ResultBean queryInPeriodInALayer(@RequestBody String params) throws ParseException {
@@ -74,9 +88,14 @@ public class CountController {
     }
 
 
+    /**
+     * 查询目标时间段内在该地点有操作的所有用户
+     *
+     * @param params 地点、目标时间段的开始和结束时间
+     * @return 统计结果
+     */
     @ResponseBody
     @RequestMapping("/queryInPeriod")
-    // description 查询目标时间段内在该地点有操作的所有用户
     public ResultBean queryInPeriod(@RequestBody String params) throws ParseException {
 
         CountMessage message = JSON.parseObject(params, new TypeReference<CountMessage>() {
@@ -85,9 +104,15 @@ public class CountController {
         return countPeopleService.countInPeriod(message);
     }
 
+    /**
+     * 查询当前点接入的所有用户
+     *
+     * @param params
+     * @return
+     * @throws ParseException
+     */
     @ResponseBody
     @RequestMapping("/queryAtPoint")
-    // description 查询当前点接入的所有用户
     public ResultBean queryAtPoint(@RequestBody String params) throws ParseException {
 
         CountMessage countMessage = JSON.parseObject(params, new TypeReference<CountMessage>() {

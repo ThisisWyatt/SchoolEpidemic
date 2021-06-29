@@ -4,7 +4,9 @@ package com.smart.go.util;
 import com.smart.go.content.CountPeopleMessage;
 import com.smart.go.content.PathInfo;
 
-//坐标转换 百度->高德
+/**
+ * 将百度坐标转换为高德地图坐标
+ */
 public class GPSUtil {
     static double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
 
